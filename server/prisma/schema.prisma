@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id         Int             @id @default(autoincrement())
+  omdbId     Int             @unique
+  categories MovieCategory[]
+  tickets    Ticket[]
+  rating     Rating[]
+}
+
+model Category {
+  id       Int             @id @default(autoincrement())
+  category String
+  movies   MovieCategory[]
+}
+
+model MovieCategory {
+  movieId    Int
+  categoryId Int
+  movie      Movie    @relation(fields: [movieId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([movieId, categoryId])
+}
+
+model Branch {
+  id             Int             @id @default(autoincrement())
+  location       String
+  staffSchedules StaffSchedule[]
+  studios        Studio[]
+}
+
+model Staff {
+  id             Int             @id @default(autoincrement())
+  name           String
+  isActive       Boolean         @default(true)
+  address        String
+  staffSchedules StaffSchedule[]
+  transaction    Transaction[]
+}
+
+model StaffSchedule {
+  id       Int      @id @default(autoincrement())
+  branchId Int
+  staffId  Int
+  date     DateTime
+  shift    Shift
+
+  branch Branch @relation(fields: [branchId], references: [id])
+  staff  Staff  @relation(fields: [staffId], references: [id])
+
+  @@unique([branchId, staffId, date, shift])
+}
+
+enum Shift {
+  morning
+  noon
+  afternoon
+}
+
+model Studio {
+  id         Int    @id @default(autoincrement())
+  branchId   Int
+  branch     Branch @relation(fields: [branchId], references: [id])
+  studioName String //Studio 1,2,3
+
+  seats Seat[]
+}
+
+model Seat {
+  id       Int    @id @default(autoincrement())
+  studioId Int
+  row      String //A,B,C
+  number   Int
+
+  studio Studio   @relation(fields: [studioId], references: [id])
+  ticket Ticket[]
+}
+
+model Ticket {
+  id            Int      @id @default(autoincrement())
+  movieId       Int
+  seatId        Int
+  time          DateTime
+  price         Float
+  transactionId Int
+
+  movie       Movie       @relation(fields: [movieId], references: [id])
+  seat        Seat        @relation(fields: [seatId], references: [id])
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  @@unique([movieId, time, seatId])
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  username    String
+  email       String   @unique
+  password    String
+  points      Int      @default(0)
+  pointExpire DateTime
+  referalCode String
+  referalTo   String
+}
+
+model Transaction {
+  id         Int             @id @default(autoincrement())
+  staffId    Int?
+  userId     Int?
+  date       DateTime        @default(now())
+  invoiceNum String
+  type       TypeTransaction
+  pointsUsed Int?
+
+  ticket Ticket[]
+  Staff  Staff?   @relation(fields: [staffId], references: [id])
+}
+
+enum TypeTransaction {
+  online
+  offline
+}
+
+model Rating {
+  movie_id Int
+  user_id  Int
+  rate     Int
+
+  Movie Movie @relation(fields: [movie_id], references: [id])
+
+  @@id([movie_id, user_id])
+}
+
+// MovieHaven
