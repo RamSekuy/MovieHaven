@@ -92,11 +92,12 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `points` INTEGER NOT NULL DEFAULT 0,
-    `pointExpire` DATETIME(3) NOT NULL,
-    `referalCode` VARCHAR(191) NOT NULL,
-    `referalTo` VARCHAR(191) NOT NULL,
+    `pointExpire` DATETIME(3) NULL,
+    `referalCode` VARCHAR(191) NULL,
+    `referalTo` VARCHAR(191) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_referalCode_key`(`referalCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

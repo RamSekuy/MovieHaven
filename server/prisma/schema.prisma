@@ -39,15 +39,18 @@ model MovieCategory {
 model Branch {
   id             Int             @id @default(autoincrement())
   location       String
+  password       String
   staffSchedules StaffSchedule[]
   studios        Studio[]
 }
 
 model Staff {
-  id             Int             @id @default(autoincrement())
-  name           String
-  isActive       Boolean         @default(true)
-  address        String
+  id       Int     @id @default(autoincrement())
+  name     String
+  isActive Boolean @default(true)
+  address  String
+  email    String  @unique
+
   staffSchedules StaffSchedule[]
   transaction    Transaction[]
 }
@@ -106,14 +109,14 @@ model Ticket {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   username    String
-  email       String   @unique
+  email       String    @unique
   password    String
-  points      Int      @default(0)
-  pointExpire DateTime
-  referalCode String
-  referalTo   String
+  points      Int       @default(0)
+  pointExpire DateTime?
+  referalCode String?   @unique
+  referalTo   String?
 }
 
 model Transaction {
@@ -143,5 +146,3 @@ model Rating {
 
   @@id([movie_id, user_id])
 }
-
-// MovieHaven

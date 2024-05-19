@@ -2,6 +2,8 @@
 import { PORT } from "./config/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import ticketRouter from "./routers/ticket.router";
+import userRouter from "./routers/user.router";
+import staffRouter from "./routers/staff.router";
 
 export class App {
   private app: Application;
@@ -19,6 +21,8 @@ export class App {
     });
 
     this.app.use("/ticket", ticketRouter.getRouter());
+    this.app.use("/user", userRouter.getRouter());
+    this.app.use("/staff", staffRouter.getRouter());
   }
   private errorHandler() {
     this.app.use(
