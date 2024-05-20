@@ -18,6 +18,7 @@ export class TicketController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await userService.login(req);
+      console.log(data);
       res.send({
         message: "success login",
         data,

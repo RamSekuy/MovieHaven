@@ -27,7 +27,9 @@ CREATE TABLE `MovieCategory` (
 CREATE TABLE `Branch` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `location` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Branch_password_key`(`password`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -37,7 +39,10 @@ CREATE TABLE `Staff` (
     `name` VARCHAR(191) NOT NULL,
     `isActive` BOOLEAN NOT NULL DEFAULT true,
     `address` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Staff_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -1,16 +1,17 @@
 /** @format */
 import { Request } from "express";
 import { prisma } from "../lib/prisma";
-import { trimRequestBody } from "../utils/trimRequestBody";
+import { Prisma } from "@prisma/client";
+import { formatRequestBody } from "../utils/formatRequestBody";
 import { generateReferal } from "../utils/generateReferal";
+import { compare } from "bcrypt";
 
 export class UserService {
   async register(req: Request) {
-    const data = trimRequestBody(req);
+    const data = await formatRequestBody(req, true);
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() + 3);
 
-    let result;
     try {
       await prisma.$transaction(async (prisma) => {
         const res1 = await prisma.user.create({ data });
@@ -43,31 +44,28 @@ export class UserService {
               },
             });
           }
-          result = res2;
         }
+        return res2;
       });
     } catch (error) {
       throw error;
     }
-    return result;
   }
 
   async login(req: Request) {
-    const body = trimRequestBody(req);
-    const data = await prisma.user.findMany({
-      select: {
-        username: true,
-        email: true,
-        points: true,
-        pointExpire: true,
-        referalCode: true,
-      },
+    const body = await formatRequestBody(req);
+    const data = await prisma.user.findFirst({
       where: {
-        email: { equals: String(body.email) },
-        password: { equals: String(body.password) },
+        email: req.body.email,
       },
     });
-    return data;
+    if (data == null) throw new Error("Invalid email");
+
+    if (!(await compare(body.password, data.password)))
+      throw new Error("Invalid passwod");
+    const result: { password?: string } = { ...data };
+    delete result.password;
+    return result;
   }
 
   async referralUser(req: Request) {

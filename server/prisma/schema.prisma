@@ -39,7 +39,7 @@ model MovieCategory {
 model Branch {
   id             Int             @id @default(autoincrement())
   location       String
-  password       String
+  password       String          @unique
   staffSchedules StaffSchedule[]
   studios        Studio[]
 }
@@ -50,6 +50,7 @@ model Staff {
   isActive Boolean @default(true)
   address  String
   email    String  @unique
+  password String
 
   staffSchedules StaffSchedule[]
   transaction    Transaction[]
