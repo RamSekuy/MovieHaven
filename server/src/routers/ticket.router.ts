@@ -8,11 +8,15 @@ class ticketRouter extends EntityRouter {
     this.initializedRoutes();
   }
   private initializedRoutes() {
-    this.router.get("/", ticketController.getAll.bind(ticketController));
-    this.router.get(
-      "/:brandId",
-      ticketController.getByBranch.bind(ticketController)
-    );
+    //   this.router.get("/", ticketController.getAll.bind(ticketController));
+    //   this.router.get(
+    //     "/:brandId",
+    //     ticketController.getByTickets.bind(ticketController)
+    //   );
+    // this.router.post(
+    //   "/:brandId/addTickets",
+    //   ticketController.getByBranch.bind(ticketController)
+    // );
   }
 }
 export default new ticketRouter();

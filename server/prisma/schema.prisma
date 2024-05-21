@@ -14,26 +14,29 @@ datasource db {
 }
 
 model Movie {
-  id         Int             @id @default(autoincrement())
-  omdbId     Int             @unique
-  categories MovieCategory[]
-  tickets    Ticket[]
-  rating     Rating[]
+  id       Int         @id @default(autoincrement())
+  status   MovieStatus @default(CommingSoon)
+  omdbId   String      @unique
+  title    String
+  year     String
+  age      String
+  released DateTime
+  length   String
+  genre    String
+  director String
+  actors   String
+  plot     String
+  language String
+  country  String
+  poster   String
+  tickets  Ticket[]
+  rating   Rating[]
 }
 
-model Category {
-  id       Int             @id @default(autoincrement())
-  category String
-  movies   MovieCategory[]
-}
-
-model MovieCategory {
-  movieId    Int
-  categoryId Int
-  movie      Movie    @relation(fields: [movieId], references: [id])
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  @@id([movieId, categoryId])
+enum MovieStatus {
+  CurrentlyPlaying
+  OutOfTheather
+  CommingSoon
 }
 
 model Branch {
@@ -100,11 +103,11 @@ model Ticket {
   seatId        Int
   time          DateTime
   price         Float
-  transactionId Int
+  transactionId Int?
 
-  movie       Movie       @relation(fields: [movieId], references: [id])
-  seat        Seat        @relation(fields: [seatId], references: [id])
-  transaction Transaction @relation(fields: [transactionId], references: [id])
+  movie       Movie        @relation(fields: [movieId], references: [id])
+  seat        Seat         @relation(fields: [seatId], references: [id])
+  transaction Transaction? @relation(fields: [transactionId], references: [id])
 
   @@unique([movieId, time, seatId])
 }

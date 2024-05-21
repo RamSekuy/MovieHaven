@@ -13,7 +13,20 @@ class MovieRouter extends EntityRouter {
       movieController.getRegisteredMovie.bind(movieController)
     );
 
-    this.router.get("/");
+    this.router.post(
+      "/:omdbId",
+      movieController.addMovie.bind(movieController)
+    );
+
+    this.router.patch(
+      "/:omdbId",
+      movieController.updateMovie.bind(movieController)
+    );
+
+    this.router.delete(
+      "/:omdbId",
+      movieController.deleteMovie.bind(movieController)
+    );
   }
 }
 export default new MovieRouter();

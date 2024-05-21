@@ -16,16 +16,16 @@ export class TicketController {
     }
   }
 
-  async getByBranch(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = await ticketService.getAll(req);
-      res.send({
-        message: "fetch ticket",
-        data,
-      });
-    } catch (error) {
-      next(error);
-    }
+  async getTickets(req: Request, res: Response, next: NextFunction) {
+    //   try {
+    //     const data = await ticketService.getTickets(req);
+    //     res.send({
+    //       message: "The ticket has been purchased ",
+    //       data,
+    //     });
+    //   } catch (error) {
+    //     next(error);
+    //   }
   }
 }
 

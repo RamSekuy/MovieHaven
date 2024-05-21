@@ -4,6 +4,8 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import ticketRouter from "./routers/ticket.router";
 import userRouter from "./routers/user.router";
 import staffRouter from "./routers/staff.router";
+import cors from "cors";
+import movieRouter from "./routers/movie.router";
 
 export class App {
   private app: Application;
@@ -23,6 +25,7 @@ export class App {
     this.app.use("/ticket", ticketRouter.getRouter());
     this.app.use("/user", userRouter.getRouter());
     this.app.use("/staff", staffRouter.getRouter());
+    this.app.use("/movie", movieRouter.getRouter());
   }
   private errorHandler() {
     this.app.use(
@@ -37,6 +40,7 @@ export class App {
   private configure() {
     this.app.use(express.json());
     this.app.use(express.urlencoded());
+    this.app.use(cors());
   }
   public start() {
     this.app.listen(PORT, () => {
