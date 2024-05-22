@@ -38,7 +38,7 @@ const SeatLayout: React.FC = () => {
           Screen
         </div>
       </div>
-      <div className="flex flex-row items-center w-full  space-x-2">
+      <div className="flex flex-row items-center w-full justify-center  space-x-2">
         <div>
           {rows.map((row) => (
             <div key={row} className="flex mb-2 items-center">

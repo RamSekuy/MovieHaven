@@ -17,6 +17,8 @@ class ticketRouter extends EntityRouter {
     //   "/:brandId/addTickets",
     //   ticketController.getByBranch.bind(ticketController)
     // );
+
+    this.router.post("/:branchId/v1", ticketController.addTicketsForStudio);
   }
 }
 export default new ticketRouter();
