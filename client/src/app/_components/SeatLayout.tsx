@@ -1,81 +1,60 @@
 "use client";
 
-import React, { useState } from "react";
-import Seat from "./Seat";
+import React, { useEffect, useState } from "react";
+import Seat from "./Seat"; // Adjust the import path as needed
 
-const rows = ["A", "B", "C", "D", "E"];
-const seatsPerRow = 5;
-const rows2 = ["A", "B", "C", "D", "E"];
-const seatsPerRow2 = 5;
+type TSeat = {
+  studioId: number;
+  row: string;
+  number: number;
+};
+
+interface TTicket {
+  price: number;
+  movieId: number;
+  seatId: number;
+  time: Date;
+  seat: TSeat;
+  transactionId?: number;
+}
 
 const SeatLayout: React.FC = () => {
-  const reservedSeats = [
-    "A1",
-    "B2",
-    "C3",
-    "D4",
-    "E5",
-    "E6",
-    "D7",
-    "C8",
-    "B9",
-    "A10",
-  ]; // Example reserved seats
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [tickets, setTickets] = useState<TTicket[]>([]);
+  async function fetchTicket() {
+    const res = await fetch("http://localhost:7000/ticket/1/");
+    const data = await res.json();
+    setTickets(data.data);
+  }
+  useEffect(() => {
+    fetchTicket();
+  }, []);
 
-  const handleSeatClick = (seatNumber: string) => {
-    setSelectedSeats((prevSelectedSeats) =>
-      prevSelectedSeats.includes(seatNumber)
-        ? prevSelectedSeats.filter((seat) => seat !== seatNumber)
-        : [...prevSelectedSeats, seatNumber]
-    );
-  };
+  const seatMap = tickets.reduce((acc: any, ticket: TTicket) => {
+    const { row, number } = ticket.seat;
+    if (!acc[row]) acc[row] = [];
+    acc[row].push({ ...ticket, seatNumber: `${row}${number}` });
+    return acc;
+  }, {} as { [key: string]: Array<TTicket & { seatNumber: string }> });
 
   return (
-    <div className="flex flex-col items-center w-full">
-      <div className="flex justify-center w-full items-center h-12 mb-2">
-        <div className="bg-gray-500 w-full  text-center  text-white px-4 py-2 rounded-md">
-          Screen
-        </div>
+    <div className="w-full p-4">
+      <div className="w-full bg-black text-white text-center rounded-full">
+        Screen
       </div>
-      <div className="flex flex-row items-center w-full justify-center  space-x-2">
-        <div>
-          {rows.map((row) => (
-            <div key={row} className="flex mb-2 items-center">
-              {Array.from({ length: seatsPerRow }, (_, i) => {
-                const seatNumber = `${row}${i + 1}`;
-                return (
-                  <Seat
-                    key={seatNumber}
-                    seatNumber={seatNumber}
-                    isReserved={reservedSeats.includes(seatNumber)}
-                    onClick={handleSeatClick}
-                  />
-                );
-              })}
+      <div className="w-full">
+        {Object.keys(seatMap)
+          .reverse()
+          .map((row) => (
+            <div key={row} className="flex mb-4">
+              {seatMap[row].map((ticket: TTicket & { seatNumber: string }) => (
+                <Seat
+                  key={ticket.seatId}
+                  seatNumber={ticket.seatNumber}
+                  isReserved={Boolean(ticket.transactionId)}
+                />
+              ))}
             </div>
           ))}
-        </div>
-        <div className=" flex w-20% h-full text-gray-600 items-center justify-center rotate-90">
-          <span>Access</span>
-        </div>
-        <div>
-          {rows2.map((row) => (
-            <div key={row} className="flex mb-2 items-center">
-              {Array.from({ length: seatsPerRow }, (_, i) => {
-                const seatNumber = `${row}${i + 6}`;
-                return (
-                  <Seat
-                    key={seatNumber}
-                    seatNumber={seatNumber}
-                    isReserved={reservedSeats.includes(seatNumber)}
-                    onClick={handleSeatClick}
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

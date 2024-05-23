@@ -13,10 +13,10 @@ class ticketRouter extends EntityRouter {
     //     "/:brandId",
     //     ticketController.getByTickets.bind(ticketController)
     //   );
-    // this.router.post(
-    //   "/:brandId/addTickets",
-    //   ticketController.getByBranch.bind(ticketController)
-    // );
+    this.router.get(
+      "/:studioId/",
+      ticketController.getByStudio.bind(ticketController)
+    );
 
     this.router.post("/:branchId/v1", ticketController.addTicketsForStudio);
   }

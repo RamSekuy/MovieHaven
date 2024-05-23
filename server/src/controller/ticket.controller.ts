@@ -28,6 +28,18 @@ export class TicketController {
     //   }
   }
 
+  async getByStudio(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await ticketService.getByStudio(req);
+      res.send({
+        message: "The ticket has been purchased ",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async addTicketsForStudio(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await ticketService.addTicketsForStudio(req);

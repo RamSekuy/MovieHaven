@@ -8,18 +8,16 @@ export class TicketService {
     return await prisma.ticket.findMany();
   }
 
-  async getByBranch(req: Request) {
-    const { branchId } = req.params;
+  async getByStudio(req: Request) {
+    const studioId = Number(req.params.studioId);
+
+    if (!studioId) throw new Error("Invalid studio ID");
     return await prisma.ticket.findMany({
       include: {
-        seat: {
-          include: {
-            studio: { select: { branch: { select: { location: true } } } },
-          },
-        },
+        seat: true,
       },
       where: {
-        seat: { studio: { branchId: Number(branchId) } },
+        seat: { studioId },
       },
     });
   }

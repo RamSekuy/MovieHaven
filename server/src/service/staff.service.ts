@@ -10,6 +10,8 @@ export class StaffSevice {
     await prisma.staff.create({ data });
   }
 
+  async getAllStaff() {}
+
   async staffLogin(req: Request) {
     const body = await formatRequestBody(req);
     const currentDate = new Date();
