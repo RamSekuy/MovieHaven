@@ -10,7 +10,7 @@ export class MovieService {
 
   async getMovieById(req: Request) {
     const { omdbId } = req.params;
-    return await prisma.movie.findMany({ where: { omdbId } });
+    return await prisma.movie.findUnique({ where: { omdbId } });
   }
 
   async addMovie(req: Request) {
