@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import mainAPI from "@/app/_lib/axios";
 
 type searchData = {
   title: string;
@@ -15,9 +16,10 @@ export default function AdminLogin() {
   const [input, setInput] = useState({ title: "", page: 1 });
 
   async function movieFetch(title: string, page: number) {
-    const res = await fetch(`http://localhost:7000/movie/`);
-    const result: { message: string; data: searchData[] } = await res.json();
-    setData(result.data);
+    const result = await mainAPI(`http://localhost:7000/movie/`, {
+      params: { status: "OutOfTheather" },
+    });
+    setData(result.data.data);
   }
 
   useEffect(() => {

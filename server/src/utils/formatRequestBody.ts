@@ -5,9 +5,15 @@ export async function formatRequestBody(
   req: Request,
   hashPassword: boolean = false
 ) {
-  const { email, password }: typeof req.body = req.body;
+  Object.entries(req.body as { [key: string]: string }).forEach((e, i) => {
+    const key = e[0];
+    const value = e[1];
+    req.body[key] = value.trim();
+  });
+  const { email, password } = req.body;
+
   if (email) {
-    req.body.email = email.trim().toLowerCase();
+    req.body.email = email.toLowerCase();
   }
 
   //Encrypt
@@ -15,6 +21,7 @@ export async function formatRequestBody(
     const salt = await genSalt(10);
     req.body.password = await hash(password, salt);
   }
+  console.log(req.body);
 
   return req.body;
 }
