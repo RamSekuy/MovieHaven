@@ -8,9 +8,10 @@ class MovieRouter extends EntityRouter {
     this.initializedRoutes();
   }
   private initializedRoutes() {
+    this.router.get("/", movieController.getAllMovie.bind(movieController));
     this.router.get(
-      "/",
-      movieController.getRegisteredMovie.bind(movieController)
+      "/:omdbId",
+      movieController.getMovieById.bind(movieController)
     );
 
     this.router.post(

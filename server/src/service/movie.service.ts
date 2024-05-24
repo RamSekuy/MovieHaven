@@ -1,11 +1,16 @@
 /** @format */
 import { Request } from "express";
 import { prisma } from "../lib/prisma";
-import { Movie, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export class MovieService {
-  async getRegisteredMovie(req: Request) {
-    return await prisma.movie.findMany({});
+  async getAllMovie(req: Request) {
+    return await prisma.movie.findMany();
+  }
+
+  async getMovieById(req: Request) {
+    const { omdbId } = req.params;
+    return await prisma.movie.findMany({ where: { omdbId } });
   }
 
   async addMovie(req: Request) {

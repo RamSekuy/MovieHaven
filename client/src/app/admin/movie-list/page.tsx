@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import mainAPI from "@/app/_lib/axios";
+import BackEndForm from "@/app/_components/formComponent/backEndForm";
+import { AxiosResponse } from "axios";
 
 type searchData = {
   title: string;
@@ -8,18 +11,22 @@ type searchData = {
   omdbId: string;
   poster: string;
   status: string;
+  
 };
+
+interface IModal {bool:boolean,omdbId:string}
 
 export default function AdminLogin() {
   const [data, setData] = useState<searchData[]>([]);
   const [input, setInput] = useState({ title: "", page: 1 });
-  const [bool,setbool] = useState(false)
+  const [modal,setmodal] = useState<IModal>({bool: false, omdbId:""})
 
   async function movieFetch(title: string, page: number) {
-    const res = await fetch(`http://localhost:7000/movie/`);
-    const result: { message: string; data: searchData[] } = await res.json();
-    setData(result.data);
+    const result = await mainAPI.get(`http://localhost:7000/movie/`);
+    setData(result.data.data);
   }
+
+  function update (res: AxiosResponse<{data:any, message:string}, any>){}
 
   useEffect(() => {
     movieFetch("1", 1);
@@ -59,28 +66,8 @@ export default function AdminLogin() {
             className=" min-w-40 w-[250px] md:my-5 bg-white flex flex-col items-center rounded-xl m-auto group"
             key={i}
             onClick={async () => {
-              const status = prompt(
-                "change status CurrentlyPlaying / OutOfTheather / CommingSoon"
-              );
-              if (status == "DELETE") {
-                const res = await fetch(
-                  "http://localhost:7000/movie/" + e.omdbId,
-                  { method: "DELETE" }
-                );
-                alert(res);
-              }
-              const res = await fetch(
-                "http://localhost:7000/movie/" + e.omdbId,
-                {
-                  headers: { "Content-Type": "application/json" },
-                  method: "PATCH",
-                  body: JSON.stringify({ status }),
-                }
-              );
-
-              if (res) {
-                movieFetch("1", 1);
-              }
+              
+              setbool(true)
             }}
           >
             <div className="w-[200px]  my-5 aspect-square object-top object-cover rounded-xl relative">
@@ -102,16 +89,16 @@ export default function AdminLogin() {
           </div>
         ))}
       </div>
-      <Modal/>
+      <Modal modal={modal} onSuccess={update}/>
     </main>
   );
 }
 
 
-function Modal({bool}:{bool:boolean}) {
+function Modal({modal,onSuccess}:{modal:IModal,onSuccess:(res:AxiosResponse)=>{}}) {
   return (
-    <div className={`fixed left-0 right-0 top-0 bottom-0 bg-[rgba(0,0,0,0.5] ${bool? "":"hidden"}`}>
-      
+    <div className={`fixed left-0 right-0 top-0 bottom-0 bg-[rgba(0,0,0,0.5] ${modal.bool? "":"hidden"}`}>
+      <BackEndForm onSuccess={onSuccess} method="patch" action={`/movie/${modal.omdbId}`}></BackEndForm>
     </div>
   )
 }

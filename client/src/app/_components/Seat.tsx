@@ -1,5 +1,9 @@
 "use client";
 
+<<<<<<< HEAD
+=======
+import axios from "axios";
+>>>>>>> 0e3f1e53bf4726e4a1f9afa887b2f94d7afc6a21
 import React, { useState } from "react";
 
 interface SeatProps {

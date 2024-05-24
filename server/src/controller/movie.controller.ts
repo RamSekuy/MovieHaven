@@ -4,9 +4,21 @@ import { NextFunction, Request, Response } from "express";
 import movieService from "../service/movie.service";
 
 export class MovieController {
-  async getRegisteredMovie(req: Request, res: Response, next: NextFunction) {
+  async getAllMovie(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await movieService.getRegisteredMovie(req);
+      const data = await movieService.getAllMovie(req);
+      res.send({
+        message: "fetch movie",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getMovieById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await movieService.getMovieById(req);
       res.send({
         message: "fetch movie",
         data,
