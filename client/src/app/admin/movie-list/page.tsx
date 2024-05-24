@@ -13,6 +13,7 @@ type searchData = {
 export default function AdminLogin() {
   const [data, setData] = useState<searchData[]>([]);
   const [input, setInput] = useState({ title: "", page: 1 });
+  const [bool,setbool] = useState(false)
 
   async function movieFetch(title: string, page: number) {
     const res = await fetch(`http://localhost:7000/movie/`);
@@ -101,6 +102,17 @@ export default function AdminLogin() {
           </div>
         ))}
       </div>
+      <Modal/>
     </main>
   );
 }
+
+
+function Modal({bool}:{bool:boolean}) {
+  return (
+    <div className={`fixed left-0 right-0 top-0 bottom-0 bg-[rgba(0,0,0,0.5] ${bool? "":"hidden"}`}>
+      
+    </div>
+  )
+}
+

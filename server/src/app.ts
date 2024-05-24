@@ -1,5 +1,5 @@
 /** @format */
-import { PORT } from "./config/config";
+import { PORT, corsOption } from "./config/config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import ticketRouter from "./routers/ticket.router";
 import userRouter from "./routers/user.router";
@@ -39,8 +39,8 @@ export class App {
   }
   private configure() {
     this.app.use(express.json());
-    this.app.use(express.urlencoded());
-    this.app.use(cors());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(cors(corsOption));
   }
   public start() {
     this.app.listen(PORT, () => {

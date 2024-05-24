@@ -1,6 +1,7 @@
 /** @format */
 import { EntityRouter } from "./entity.router";
 import userController from "../controller/user.controller";
+import { tokenAuth } from "../middleware/tokenAuth";
 
 class userRouter extends EntityRouter {
   constructor() {
@@ -9,9 +10,10 @@ class userRouter extends EntityRouter {
   }
   private initializedRoutes() {
     this.router.post("/v1", userController.register.bind(userController));
-    this.router.get("/v2", userController.login.bind(userController));
+    this.router.post("/v2", userController.login.bind(userController));
     this.router.get(
       "/referal/:referalCode",
+      tokenAuth,
       userController.referralUser.bind(userController)
     );
   }

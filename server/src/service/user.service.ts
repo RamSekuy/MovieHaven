@@ -1,10 +1,10 @@
 /** @format */
 import { Request } from "express";
 import { prisma } from "../lib/prisma";
-import { Prisma } from "@prisma/client";
 import { formatRequestBody } from "../utils/formatRequestBody";
 import { generateReferal } from "../utils/generateReferal";
 import { compare } from "bcrypt";
+import { generateToken } from "../lib/jwt";
 
 export class UserService {
   async register(req: Request) {
@@ -54,18 +54,17 @@ export class UserService {
 
   async login(req: Request) {
     const body = await formatRequestBody(req);
+
     const data = await prisma.user.findFirst({
       where: {
         email: req.body.email,
       },
     });
     if (data == null) throw new Error("Invalid email");
-
     if (!(await compare(body.password, data.password)))
       throw new Error("Invalid passwod");
     const result: { password?: string } = { ...data };
-    delete result.password;
-    return result;
+    return generateToken(result, { expiresIn: "1h" });
   }
 
   async referralUser(req: Request) {

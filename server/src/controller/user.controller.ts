@@ -18,10 +18,9 @@ export class TicketController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await userService.login(req);
-      console.log(data);
-      res.send({
+
+      res.cookie("uauth", data, { maxAge: 3600 * 1000 }).send({
         message: "success login",
-        data,
       });
     } catch (error) {
       next(error);
