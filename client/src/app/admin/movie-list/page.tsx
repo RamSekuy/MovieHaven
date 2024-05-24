@@ -11,50 +11,33 @@ type searchData = {
   omdbId: string;
   poster: string;
   status: string;
-  
 };
 
-interface IModal {bool:boolean,omdbId:string}
+interface IModal {
+  bool: boolean;
+  omdbId: string;
+}
 
 export default function AdminLogin() {
   const [data, setData] = useState<searchData[]>([]);
-  const [input, setInput] = useState({ title: "", page: 1 });
-  const [modal,setmodal] = useState<IModal>({bool: false, omdbId:""})
+  const [modal, setmodal] = useState<IModal>({ bool: false, omdbId: "" });
 
-  async function movieFetch(title: string, page: number) {
+  async function movieFetch() {
     const result = await mainAPI.get(`http://localhost:7000/movie/`);
     setData(result.data.data);
   }
 
-  function update (res: AxiosResponse<{data:any, message:string}, any>){}
-
   useEffect(() => {
-    movieFetch("1", 1);
+    movieFetch();
   }, []);
   return (
     <main className="w-full justify-center items-center h-screen">
       <div>
-        <input
-          type="text"
-          id="title"
-          className="border-2 border-black"
-          value={input.title}
-          onChange={(e) => {
-            setInput({ ...input, [e.target.id]: e.target.value });
-          }}
-        />
-        <input
-          type="number"
-          id="page"
-          className="border-2 border-black"
-          value={input.page}
-          onChange={(e) => {
-            setInput({ ...input, [e.target.id]: e.target.value });
-          }}
-        />
+        <input type="text" id="title" className="border-2 border-black" />
+        <input type="number" id="page" className="border-2 border-black" />
         <button
           className="bg-green-600 hover:bg-green-300 p-2"
-          onClick={() => movieFetch(input.title, input.page)}
+          onClick={() => movieFetch()}
         >
           Search
         </button>
@@ -66,8 +49,7 @@ export default function AdminLogin() {
             className=" min-w-40 w-[250px] md:my-5 bg-white flex flex-col items-center rounded-xl m-auto group"
             key={i}
             onClick={async () => {
-              
-              setbool(true)
+              setmodal({ omdbId: e.omdbId, bool: true });
             }}
           >
             <div className="w-[200px]  my-5 aspect-square object-top object-cover rounded-xl relative">
@@ -89,17 +71,77 @@ export default function AdminLogin() {
           </div>
         ))}
       </div>
-      <Modal modal={modal} onSuccess={update}/>
+      <Modal
+        modal={modal}
+        onSuccess={(res) => {
+          movieFetch();
+        }}
+      />
     </main>
   );
 }
 
-
-function Modal({modal,onSuccess}:{modal:IModal,onSuccess:(res:AxiosResponse)=>{}}) {
+function Modal({
+  modal,
+  onSuccess,
+}: {
+  modal: IModal;
+  onSuccess: (res: AxiosResponse) => void;
+}) {
   return (
-    <div className={`fixed left-0 right-0 top-0 bottom-0 bg-[rgba(0,0,0,0.5] ${modal.bool? "":"hidden"}`}>
-      <BackEndForm onSuccess={onSuccess} method="patch" action={`/movie/${modal.omdbId}`}></BackEndForm>
+    <div
+      className={`fixed left-0 right-0 top-0 bottom-0 bg-[rgba(0,0,0,0.5)] ${
+        modal.bool ? "" : "hidden"
+      }`}
+    >
+      <BackEndForm
+        onSuccess={onSuccess}
+        method="patch"
+        action={`/movie/${modal.omdbId}`}
+        classname="flex flex-col w-full justify-center items-center h-full"
+      >
+        <div className="p-4 bg-[#eaeaea]">
+          <div className="flex justify-between gap-4 w-full">
+            <label htmlFor="CurrentlyPlaying">CurrentlyPlaying</label>
+            <input
+              id="CurrentlyPlaying"
+              type="radio"
+              name="status"
+              value="CurrentlyPlaying"
+            />
+          </div>
+          <div className="flex justify-between gap-4 w-full">
+            <label htmlFor="OutOfTheather">OutOfTheather</label>
+            <input
+              id="OutOfTheather"
+              type="radio"
+              name="status"
+              value="OutOfTheather"
+            />
+          </div>
+          <div className="flex justify-between gap-4 w-full">
+            <label htmlFor="CommingSoon">CommingSoon</label>
+            <input
+              id="CommingSoon"
+              type="radio"
+              name="status"
+              value="CommingSoon"
+            />
+          </div>
+          <div className="w-full flex gap-2 my-2">
+            <input
+              type="submit"
+              className="p-2 bg-green-400 m-auto rounded-full"
+            />
+            <button className="p-2 bg-red-500 m-auto rounded-full">
+              delete
+            </button>
+            <button className="p-2 bg-slate-300 m-auto rounded-full">
+              cancel
+            </button>
+          </div>
+        </div>
+      </BackEndForm>
     </div>
-  )
+  );
 }
-

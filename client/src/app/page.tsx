@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 
 import axios from "axios";
@@ -21,9 +20,6 @@ interface IMovie {
   country: string;
   poster: string;
 }
-=======
-import Link from "next/link";
->>>>>>> 0e3f1e53bf4726e4a1f9afa887b2f94d7afc6a21
 
 const HomePage: React.FC = () => {
   const [moviesNowShowing, set] = useState<IMovie[]>([]);
