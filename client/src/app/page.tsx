@@ -42,8 +42,9 @@ const HomePage: React.FC = () => {
             <div className="flex flex-wrap -mx-2">
               {moviesNowShowing.map((movie) =>
                 movie.status == "CurrentlyPlaying" ? (
-                  <div key={movie.id} className="w-full md:w-1/2 lg:w-1/4 p-2">
-                    <div className="bg-red rounded-lg shadow-md overflow-hidden">
+                  
+                  <div key={movie.id}   className="w-full md:w-1/2 lg:w-1/4 p-2"><a href={`http://localhost:3000/${movie.omdbId}`}>
+                    <div  className="bg-red rounded-lg shadow-md overflow-hidden">
                       <img
                         src={movie.poster}
                         alt={movie.title}
@@ -54,6 +55,7 @@ const HomePage: React.FC = () => {
                         <p className="text-gray-600">{movie.genre}</p>
                       </div>
                     </div>
+                    </a>
                   </div>
                 ) : (
                   ""
