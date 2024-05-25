@@ -8,7 +8,9 @@ declare global {
     }
   }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 0e3f1e53bf4726e4a1f9afa887b2f94d7afc6a21
+declare module "Express" {
+  interface Request {
+    body: { [key: string]: string };
+  }
+}

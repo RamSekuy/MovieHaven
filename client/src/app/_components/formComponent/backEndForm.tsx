@@ -1,21 +1,21 @@
 "use client";
 import { FormEvent } from "react";
-import mainAPI from "@/app/_lib/axios";
+import mainAPI, { TMainApiRespone, TRoute } from "@/app/_lib/mainApi";
 import { ReactNode } from "react";
 import { AxiosResponse } from "axios";
 
 interface IFormProps {
   method?: "get" | "post" | "delete" | "patch";
-  action: string;
+  action: TRoute[keyof TRoute];
   children?: ReactNode;
-  classname?: string;
-  onSuccess: (res: AxiosResponse<{ data: any; message: string }>) => void;
+  className?: string;
+  onSuccess: (res: AxiosResponse<TMainApiRespone>) => void;
   onFail?: (err: unknown) => void;
 }
 
 export default function BackEndForm({
   method = "get",
-  classname = "",
+  className = "",
   action,
   children,
   onSuccess,
@@ -45,7 +45,7 @@ export default function BackEndForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className={classname}>
+    <form onSubmit={onSubmit} className={className}>
       {children}
     </form>
   );

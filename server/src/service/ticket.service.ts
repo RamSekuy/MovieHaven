@@ -23,21 +23,17 @@ export class TicketService {
   }
 
   async addTicketsForStudio(req: Request) {
-    const {
-      studioId,
-      time,
-      movieId,
-      price,
-    }: { price: number; studioId: number; time: string; movieId: number } =
-      req.body;
+    const { studioId, time, movieId, price } = req.body;
 
-    const seats = await prisma.seat.findMany({ where: { studioId } });
+    const seats = await prisma.seat.findMany({
+      where: { studioId: Number(studioId) },
+    });
 
     if (!seats?.length) throw new Error("input valid studio");
     const generatedTickets: Prisma.TicketCreateManyInput[] = seats.map(
       (e, i) => ({
-        price,
-        movieId,
+        price: Number(price),
+        movieId: Number(movieId),
         seatId: e.id,
         time: new Date(time),
       })

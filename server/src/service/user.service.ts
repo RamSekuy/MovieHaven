@@ -5,12 +5,14 @@ import { formatRequestBody } from "../utils/formatRequestBody";
 import { generateReferal } from "../utils/generateReferal";
 import { compare } from "bcrypt";
 import { generateToken } from "../lib/jwt";
+import { Prisma } from "@prisma/client";
 
 export class UserService {
   async register(req: Request) {
-    const data = await formatRequestBody(req, true);
+    const { username, email, password } = await formatRequestBody(req, true);
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() + 3);
+    const data: Prisma.UserCreateManyInput = { username, email, password };
 
     try {
       await prisma.$transaction(async (prisma) => {

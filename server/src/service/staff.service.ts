@@ -3,10 +3,15 @@ import { Request } from "express";
 import { prisma } from "../lib/prisma";
 import { formatRequestBody } from "../utils/formatRequestBody";
 import { compare } from "bcrypt";
+import { Prisma } from "@prisma/client";
 
 export class StaffSevice {
   async addStaff(req: Request) {
-    const data = await formatRequestBody(req, true);
+    const { name, email, address, password } = await formatRequestBody(
+      req,
+      true
+    );
+    const data: Prisma.StaffCreateInput = { name, email, address, password };
     await prisma.staff.create({ data });
   }
 

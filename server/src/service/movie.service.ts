@@ -5,7 +5,10 @@ import { Prisma } from "@prisma/client";
 
 export class MovieService {
   async getAllMovie(req: Request) {
-    return await prisma.movie.findMany();
+    const { title } = req.query;
+    let condition: Prisma.MovieFindManyArgs = {};
+    if (title) condition = { where: { title: { contains: String(title) } } };
+    return await prisma.movie.findMany(condition);
   }
 
   async getMovieById(req: Request) {
@@ -44,13 +47,11 @@ export class MovieService {
   async updateMovie(req: Request) {
     const { omdbId } = req.params;
     const data: Prisma.MovieUpdateInput = req.body;
-
-    await prisma.movie.update({ where: { omdbId }, data });
+    return await prisma.movie.update({ where: { omdbId }, data });
   }
 
   async deleteMovie(req: Request) {
     const { omdbId } = req.params;
-
     await prisma.movie.delete({ where: { omdbId } });
   }
 }

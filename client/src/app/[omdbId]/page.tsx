@@ -1,47 +1,30 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import axios from "axios";
+import { Metadata } from "next";
+import { IMovie } from "../_model/movie.model";
+import mainAPI from "../_lib/mainApi";
 
-type MovieDetail = {
-  title: string;
-  year: string;
-  omdbId: string;
-  poster: string;
-  status: string;
-  plot: string;
-  actors: string;
-  genre: string;
-  age: string;
-  country: string;
-  language: string;
+export const generateMetadata = async ({
+  params,
+}: {
+  params: {
+    omdbId: string;
+  };
+}): Promise<Metadata> => {
+  const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
+  return {
+    title: result.title,
+  };
 };
 
-export default function MovieDetailPage() {
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
-  const params = useParams();
-  const id = params.omdbId;
+type Props = {
+  params: {
+    omdbId: string;
+  };
+};
 
-  useEffect(() => {
-    if (id) {
-      fetchMovieDetail(id as string);
-    }
-  }, [id]);
-
-  async function fetchMovieDetail(movieId: string) {
-    const res = await fetch(`http://localhost:7000/movie/${movieId}`);
-    const result: { message: string; data: MovieDetail } = await res.json();
-    console.log(result);
-    console.log(result.data);
-
-    setMovie(result.data);
-  }
-
-  if (!movie) {
-    return <div>Loading...</div>;
-  }
-
+export default async function MovieDetailPage({ params }: Props) {
+  const movie = await (await mainAPI.get(`/movie/${params.omdbId}`)).data.data;
   return (
     <main className="w-full flex flex-col items-center h-auto p-4">
       <div className="w-full max-w-4xl">
@@ -82,7 +65,6 @@ export default function MovieDetailPage() {
             <p>
               <strong>Status:</strong> {movie.status}
             </p>
-
           </div>
         </div>
       </div>
