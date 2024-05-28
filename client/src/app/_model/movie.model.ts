@@ -1,6 +1,6 @@
 export interface IMovie {
   id: number;
-  status: "CurrentlyPlaying" | "OutOfTheather" | "ComingSoon";
+  status: "CurrentlyPlaying" | "OutOfTheather" | "CommingSoon";
   omdbId: string;
   title: string;
   year: string;

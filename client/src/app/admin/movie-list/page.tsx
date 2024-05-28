@@ -74,7 +74,7 @@ export default function AdminLogin() {
               Update Status for {selectedMovie.movie.title}
             </h2>
             <select className="border-2 border-black mb-4 w-full" name="status">
-              <option value="ComingSoon">Coming Soon</option>
+              <option value="CommingSoon">Coming Soon</option>
               <option value="CurrentlyPlaying">Currently Playing</option>
               <option value="OutOfTheater">Out Of Theater</option>
             </select>

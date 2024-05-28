@@ -11,13 +11,15 @@ const HomePage: React.FC = () => {
     let comingSoonMovies: IMovie[] = [];
     let currentlyPlayingMovies: IMovie[] = [];
     data.forEach((e) => {
-      if (e.status == "ComingSoon") comingSoonMovies.push(e);
+      if (e.status == "CommingSoon") comingSoonMovies.push(e);
       if (e.status == "CurrentlyPlaying") currentlyPlayingMovies.push(e);
     });
+
     console.log(comingSoonMovies);
     console.log(currentlyPlayingMovies);
     set([currentlyPlayingMovies, comingSoonMovies]);
   }
+
   useEffect(() => {
     fetchMovie();
   }, []);
@@ -58,7 +60,7 @@ const HomePage: React.FC = () => {
                   <div className="bg-white rounded-lg shadow-md overflow-hidden">
                     <img
                       src={movie.poster}
-                      alt={movie.poster}
+                      alt={movie.title}
                       className="w-full h-auto"
                     />
                     <div className="p-4">

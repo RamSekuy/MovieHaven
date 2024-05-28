@@ -1,6 +1,6 @@
 // pages/index.tsx
 import Head from 'next/head';
-import SeatLayout from '../_components/SeatLayout';
+import SeatLayout from '../_components/seatComponent/SeatLayout';
 
 const Home: React.FC = () => {
   return (
