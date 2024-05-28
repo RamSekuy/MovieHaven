@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export function NavbarToggler() {
   return (
-    <div className="w-full flex  sticky top-0">
+    <div className="w-full flex  sticky top-0 z-50">
       <Navbar className=" " />
     </div>
   );
