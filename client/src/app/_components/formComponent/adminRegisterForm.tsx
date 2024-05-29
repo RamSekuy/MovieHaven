@@ -1,21 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 const RegisterForm: React.FC = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log({ firstName, lastName, address, email, password, gender });
-  };
+  const router = useRouter();
+  const [input, setInput] = useState({});
+  function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -30,8 +23,7 @@ const RegisterForm: React.FC = () => {
               type="text"
               id="firstName"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={inputHandler}
               required
             />
           </div>
@@ -43,8 +35,7 @@ const RegisterForm: React.FC = () => {
               type="text"
               id="lastName"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={inputHandler}
               required
             />
           </div>
@@ -56,8 +47,7 @@ const RegisterForm: React.FC = () => {
               type="text"
               id="address"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={inputHandler}
               required
             />
           </div>
@@ -69,8 +59,7 @@ const RegisterForm: React.FC = () => {
               type="email"
               id="email"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={inputHandler}
               required
             />
           </div>
@@ -82,8 +71,7 @@ const RegisterForm: React.FC = () => {
               type="password"
               id="password"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={inputHandler}
               required
             />
           </div>
@@ -94,8 +82,7 @@ const RegisterForm: React.FC = () => {
             <select
               id="gender"
               className="w-full px-4 py-2 border rounded mt-2"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
+              onChange={inputHandler}
               required
             >
               <option value="">Select Gender</option>

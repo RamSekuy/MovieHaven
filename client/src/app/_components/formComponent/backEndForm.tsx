@@ -1,52 +1,54 @@
-"use client";
-import { FormEvent } from "react";
-import mainAPI, { TMainApiRespone, TRoute } from "@/app/_lib/mainApi";
-import { ReactNode } from "react";
-import { AxiosResponse } from "axios";
+import React, { FormEvent, ReactNode } from "react";
+import mainAPI from "@/app/_lib/mainApi";
 
-interface IFormProps {
-  method?: "get" | "post" | "delete" | "patch";
-  action: TRoute[keyof TRoute];
-  children?: ReactNode;
+interface BackEndFormProps {
+  action: string;
+  method: string;
+  children: ReactNode;
   className?: string;
-  onSuccess: (res: AxiosResponse<TMainApiRespone>) => void;
-  onFail?: (err: unknown) => void;
+  onSuccess: (res: any) => void;
+  onFail?: (error: any) => void;
 }
 
-export default function BackEndForm({
-  method = "get",
-  className = "",
+const BackEndForm: React.FC<BackEndFormProps> = ({
   action,
+  method,
   children,
+  className,
   onSuccess,
-  onFail = (err: unknown) => {
-    console.log(err);
-  },
-}: IFormProps) {
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  onFail,
+}) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //Make Request data input
     const formData = new FormData(e.currentTarget);
-    const data: { [key: string]: FormDataEntryValue } = {};
+    const data: { [key: string]: any } = {};
+
     formData.forEach((value, key) => {
       data[key] = value;
     });
 
     try {
-      const response = await mainAPI[method](
-        action,
-        method === "get" ? { params: data } : (data as {})
-      );
-      onSuccess(response);
+      const res = await mainAPI({
+        method: method,
+        url: action,
+        data: data,
+      });
+      onSuccess(res);
     } catch (error) {
-      onFail(error);
+      if (onFail) {
+        onFail(error);
+      } else {
+        console.error("Form submission error:", error);
+      }
     }
-  }
+  };
 
   return (
-    <form onSubmit={onSubmit} className={className}>
+    <form onSubmit={handleSubmit} className={className}>
       {children}
     </form>
   );
-}
+};
+
+export default BackEndForm;

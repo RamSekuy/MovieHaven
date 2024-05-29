@@ -3,6 +3,7 @@ import axios from "axios";
 import { Metadata } from "next";
 import { IMovie } from "../_model/movie.model";
 import mainAPI from "../_lib/mainApi";
+import Link from "next/link";
 
 export const generateMetadata = async ({
   params,
@@ -24,7 +25,9 @@ type Props = {
 };
 
 export default async function MovieDetailPage({ params }: Props) {
-  const movie = await (await mainAPI.get(`/movie/${params.omdbId}`)).data.data;
+  const movie: IMovie = await (
+    await mainAPI.get(`/movie/${params.omdbId}`)
+  ).data.data;
   return (
     <main className="w-full flex flex-col items-center h-auto p-4">
       <div className="w-full max-w-4xl">
@@ -37,11 +40,19 @@ export default async function MovieDetailPage({ params }: Props) {
               height={450}
               className="rounded-lg"
             />
+            <Link href={`/${params.omdbId}/ticket`}>
+              <button className="flex bg-green-400 h-10 w-full rounded-full mt-5 justify-center items-center font-bold">
+                Buy Your Ticket
+              </button>
+            </Link>
           </div>
           <div className="w-full md:w-2/3 flex flex-col space-y-4">
             <h1 className="text-3xl font-bold">{movie.title}</h1>
             <p>
               <strong>Description:</strong> {movie.plot}
+            </p>
+            <p>
+              <strong>Duration:</strong> {movie.length}
             </p>
             <p>
               <strong>Year:</strong> {movie.year}

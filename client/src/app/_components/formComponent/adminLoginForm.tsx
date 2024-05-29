@@ -1,8 +1,14 @@
 "use client";
 import Link from "next/link";
 import BackEndForm from "./backEndForm";
+import { useState } from "react";
 
 const LoginForm: React.FC = () => {
+  const router = useRouter();
+  const [input, setInput] = useState({});
+  function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
@@ -10,6 +16,7 @@ const LoginForm: React.FC = () => {
         <BackEndForm
           action="/user/v2"
           method="post"
+          data={input}
           onSuccess={(response) => {
             console.log(response);
           }}

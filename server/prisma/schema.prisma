@@ -99,13 +99,13 @@ model Seat {
 
 model Ticket {
   id            Int      @id @default(autoincrement())
-  movieId       Int
+  movieId       String
   seatId        Int
   time          DateTime
   price         Float
   transactionId Int?
 
-  movie       Movie        @relation(fields: [movieId], references: [id])
+  movie       Movie        @relation(fields: [movieId], references: [omdbId])
   seat        Seat         @relation(fields: [seatId], references: [id])
   transaction Transaction? @relation(fields: [transactionId], references: [id])
 

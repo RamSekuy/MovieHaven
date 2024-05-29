@@ -8,6 +8,33 @@ export class TicketService {
     return await prisma.ticket.findMany();
   }
 
+  async getAllGroupByBranchAndTime(req: Request) {
+    const { omdbId } = req.query;
+
+    // Fetch the data from the database
+    const data = await prisma.studio.findMany({
+      include: {
+        branch: {select:{location:true}},
+        seats: {
+          include: {
+            ticket: {
+              where: {
+                movieId:String(omdbId)
+              },
+              
+            },
+          },
+        },
+      },
+    });
+
+    /* {
+      branch:{location:""}
+      seats:[]
+    }*/
+  }
+
+
   async getByStudio(req: Request) {
     const studioId = Number(req.params.studioId);
 
@@ -23,24 +50,21 @@ export class TicketService {
   }
 
   async addTicketsForStudio(req: Request) {
-    const { studioId, time, movieId, price } = req.body;
-
-    const seats = await prisma.seat.findMany({
-      where: { studioId: Number(studioId) },
-    });
-
-    if (!seats?.length) throw new Error("input valid studio");
-    const generatedTickets: Prisma.TicketCreateManyInput[] = seats.map(
-      (e, i) => ({
-        price: Number(price),
-        movieId: Number(movieId),
-        seatId: e.id,
-        time: new Date(time),
-      })
-    );
-    console.log(generatedTickets);
-
-    await prisma.ticket.createMany({ data: generatedTickets });
+    // const { studioId, time, movieId, price } = req.body;
+    // const seats = await prisma.seat.findMany({
+    //   where: { studioId: Number(studioId) },
+    // });
+    // if (!seats?.length) throw new Error("input valid studio");
+    // const generatedTickets: Prisma.TicketCreateManyInput[] = seats.map(
+    //   (e, i) => ({
+    //     price: Number(price),
+    //     movieId: Number(movieId),
+    //     seatId: e.id,
+    //     time: new Date(time),
+    //   })
+    // );
+    // console.log(generatedTickets);
+    // await prisma.ticket.createMany({ data: generatedTickets });
   }
 }
 
