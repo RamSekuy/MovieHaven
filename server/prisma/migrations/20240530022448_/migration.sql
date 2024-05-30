@@ -1,26 +1,23 @@
 -- CreateTable
 CREATE TABLE `Movie` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `omdbId` INTEGER NOT NULL,
+    `status` ENUM('CurrentlyPlaying', 'OutOfTheater', 'CommingSoon') NOT NULL DEFAULT 'CommingSoon',
+    `omdbId` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `year` VARCHAR(191) NOT NULL,
+    `age` VARCHAR(191) NOT NULL,
+    `released` DATETIME(3) NOT NULL,
+    `length` VARCHAR(191) NOT NULL,
+    `genre` VARCHAR(191) NOT NULL,
+    `director` VARCHAR(191) NOT NULL,
+    `actors` VARCHAR(191) NOT NULL,
+    `plot` VARCHAR(191) NOT NULL,
+    `language` VARCHAR(191) NOT NULL,
+    `country` VARCHAR(191) NOT NULL,
+    `poster` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Movie_omdbId_key`(`omdbId`),
     PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Category` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `category` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `MovieCategory` (
-    `movieId` INTEGER NOT NULL,
-    `categoryId` INTEGER NOT NULL,
-
-    PRIMARY KEY (`movieId`, `categoryId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -80,11 +77,11 @@ CREATE TABLE `Seat` (
 -- CreateTable
 CREATE TABLE `Ticket` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `movieId` INTEGER NOT NULL,
+    `movieId` VARCHAR(191) NOT NULL,
     `seatId` INTEGER NOT NULL,
     `time` DATETIME(3) NOT NULL,
     `price` DOUBLE NOT NULL,
-    `transactionId` INTEGER NOT NULL,
+    `transactionId` INTEGER NULL,
 
     UNIQUE INDEX `Ticket_movieId_time_seatId_key`(`movieId`, `time`, `seatId`),
     PRIMARY KEY (`id`)
@@ -129,12 +126,6 @@ CREATE TABLE `Rating` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `MovieCategory` ADD CONSTRAINT `MovieCategory_movieId_fkey` FOREIGN KEY (`movieId`) REFERENCES `Movie`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `MovieCategory` ADD CONSTRAINT `MovieCategory_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `StaffSchedule` ADD CONSTRAINT `StaffSchedule_branchId_fkey` FOREIGN KEY (`branchId`) REFERENCES `Branch`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -147,13 +138,13 @@ ALTER TABLE `Studio` ADD CONSTRAINT `Studio_branchId_fkey` FOREIGN KEY (`branchI
 ALTER TABLE `Seat` ADD CONSTRAINT `Seat_studioId_fkey` FOREIGN KEY (`studioId`) REFERENCES `Studio`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_movieId_fkey` FOREIGN KEY (`movieId`) REFERENCES `Movie`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_movieId_fkey` FOREIGN KEY (`movieId`) REFERENCES `Movie`(`omdbId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_seatId_fkey` FOREIGN KEY (`seatId`) REFERENCES `Seat`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_staffId_fkey` FOREIGN KEY (`staffId`) REFERENCES `Staff`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
