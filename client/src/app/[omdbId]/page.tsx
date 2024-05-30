@@ -1,5 +1,4 @@
 import Image from "next/image";
-import axios from "axios";
 import { Metadata } from "next";
 import { IMovie } from "../_model/movie.model";
 import mainAPI from "../_lib/mainApi";

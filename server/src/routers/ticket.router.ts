@@ -14,11 +14,15 @@ class ticketRouter extends EntityRouter {
     //     ticketController.getByTickets.bind(ticketController)
     //   );
     this.router.get(
+      "/movie/:omdbId",
+      ticketController.getByOmdbIdfillterBranchAndTime.bind(ticketController)
+    );
+    this.router.get(
       "/:studioId/",
       ticketController.getByStudio.bind(ticketController)
     );
 
-    this.router.post("/:branchId/v1", ticketController.addTicketsForStudio);
+    this.router.post("/:studioId/v1", ticketController.addTicketsForStudio);
   }
 }
 export default new ticketRouter();

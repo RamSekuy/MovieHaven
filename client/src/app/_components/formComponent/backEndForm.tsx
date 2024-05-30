@@ -1,8 +1,9 @@
 import React, { FormEvent, ReactNode } from "react";
 import mainAPI from "@/app/_lib/mainApi";
+import { TRoute } from "@/app/_lib/mainApi";
 
 interface BackEndFormProps {
-  action: string;
+  action: TRoute[keyof TRoute];
   method: string;
   children: ReactNode;
   className?: string;

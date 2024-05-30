@@ -28,6 +28,18 @@ export class TicketController {
     //   }
   }
 
+  async getByOmdbIdfillterBranchAndTime(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await ticketService.getByOmdbIdfillterBranchAndTime(req);
+      res.send({
+        message: "fetch ticket",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getByStudio(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await ticketService.getByStudio(req);

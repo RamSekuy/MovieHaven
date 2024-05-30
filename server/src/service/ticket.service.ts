@@ -8,32 +8,30 @@ export class TicketService {
     return await prisma.ticket.findMany();
   }
 
-  async getAllGroupByBranchAndTime(req: Request) {
-    const { omdbId } = req.query;
-
+  async getByOmdbIdfillterBranchAndTime(req: Request) {
+    const { omdbId } = req.params;
+    const { time, branch } = req.query;
     // Fetch the data from the database
-    const data = await prisma.studio.findMany({
+    return await prisma.studio.findMany({
+      distinct: ["branchId"],
       include: {
-        branch: {select:{location:true}},
+        branch: { select: { location: true } },
         seats: {
           include: {
             ticket: {
+              select: { time: true },
+              distinct: ["time"],
               where: {
-                movieId:String(omdbId)
+                movieId: String(omdbId),
+                ...(time ? { time: String(time) } : {}),
               },
-              
             },
           },
         },
       },
+      where: { branch: { location: { contains: time ? String(branch) : "" } } },
     });
-
-    /* {
-      branch:{location:""}
-      seats:[]
-    }*/
   }
-
 
   async getByStudio(req: Request) {
     const studioId = Number(req.params.studioId);
@@ -50,21 +48,19 @@ export class TicketService {
   }
 
   async addTicketsForStudio(req: Request) {
-    // const { studioId, time, movieId, price } = req.body;
-    // const seats = await prisma.seat.findMany({
-    //   where: { studioId: Number(studioId) },
-    // });
-    // if (!seats?.length) throw new Error("input valid studio");
-    // const generatedTickets: Prisma.TicketCreateManyInput[] = seats.map(
-    //   (e, i) => ({
-    //     price: Number(price),
-    //     movieId: Number(movieId),
-    //     seatId: e.id,
-    //     time: new Date(time),
-    //   })
-    // );
-    // console.log(generatedTickets);
-    // await prisma.ticket.createMany({ data: generatedTickets });
+    const studioId = Number(req.params.studioId);
+    const { time, omdbId, price } = req.body;
+    const seats = await prisma.seat.findMany({
+      where: { studioId: Number(studioId) },
+    });
+    if (!seats?.length) throw new Error("input valid studio");
+    const data: Prisma.TicketCreateManyInput[] = seats.map((e) => ({
+      price: Number(price),
+      time: new Date(time),
+      seatId: e.id,
+      movieId: String(omdbId),
+    }));
+    await prisma.ticket.createMany({ data });
   }
 }
 
