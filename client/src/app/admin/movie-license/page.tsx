@@ -26,27 +26,47 @@ export default function AdminLogin() {
 
   return (
     <main className="w-full justify-center items-center h-screen">
-      <div>
-        <input
-          type="text"
-          id="title"
-          className="border-2 border-black"
-          value={input.title}
-          onChange={(e) => {
-            setInput({ ...input, [e.target.id]: e.target.value });
-          }}
-        />
-        <input
-          type="number"
-          id="page"
-          className="border-2 border-black"
-          value={input.page}
-          onChange={(e) => {
-            setInput({ ...input, [e.target.id]: e.target.value });
-          }}
-        />
+      <div className="flex justify-center flex-col sm:flex-row gap-2 m-auto flex-wrap px-2">
+        <div className="w-full flex flex-col">
+          <input
+            placeholder="movie title"
+            type="text"
+            id="title"
+            className="border-2 border-black px-2"
+            value={input.title}
+            onChange={(e) => {
+              setInput({ ...input, [e.target.id]: e.target.value });
+            }}
+            onKeyDown={(e)=>{e.key!=="Enter"?null:omdbFetch(input.title, input.page)}}
+          />
+          <div className="flex w-full gap-x-4 p-2 item-center justify-center text-center">
+            <button
+              className="p-2 border-2 border-black"
+              onClick={(e) => {
+                const data = { ...input };
+                --data.page;
+                setInput({ ...data });
+              }}
+            >
+              Prev
+            </button>
+            <div className="text-center flex item-center justify-center py-2">
+              {input.page}
+            </div>
+            <button
+              className="p-2 border-2 border-black"
+              onClick={(e) => {
+                const data = { ...input };
+                ++data.page;
+                setInput({ ...data });
+              }}
+            >
+              Next
+            </button>
+          </div>
+        </div>
         <button
-          className="bg-green-600 hover:bg-green-300 p-2"
+          className="bg-green-600 hover:bg-green-300 p-2 w-max m-auto"
           onClick={() => omdbFetch(input.title, input.page)}
         >
           Search

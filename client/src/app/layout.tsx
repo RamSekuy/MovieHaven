@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NavbarToggler } from "./_components/navbarComponent/navbar";
+import Footer from "./_components/footerComponent/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NavbarToggler/>
-        {children}</body>
+        {children}
+        <Footer/>
+        </body>
+
     </html>
   );
 }

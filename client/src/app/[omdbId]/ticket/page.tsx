@@ -2,8 +2,9 @@ import Modal from "@/app/_components/ticketComponent/Modal";
 import mainAPI from "@/app/_lib/mainApi";
 import { Metadata } from "next";
 import { formatToRupiah } from "@/app/_utils/formatToRupiah";
-import TicketForm from "@/app/_components/ticketComponent/ticketForm";
+import TicketSelect from "@/app/_components/ticketComponent/ticketForm";
 import { TBranchTicket } from "@/app/_model/branchTicket.model";
+import { redirect } from 'next/navigation';
 
 export const generateMetadata = async ({
   params,
@@ -13,6 +14,7 @@ export const generateMetadata = async ({
   };
 }): Promise<Metadata> => {
   const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
+  result==null?redirect('/movieNotFound'):null
   return {
     title: result.title,
   };
@@ -25,32 +27,14 @@ type Props = {
 };
 
 const TicketPage = async ({ params }: Props) => {
-  const tickets:TBranchTicket[] = await (
-    await mainAPI.get(`/ticket/movie/${params.omdbId}`)
-  ).data.data;
-  // const [branch, setBranch] = useState("");
-  // const [time, setTime] = useState("");
-  // const [seats, setSeats] = useState<string[]>([]);
-  // const [total, setTotal] = useState(0);
-  // const [bookedSeats, setBookedSeats] = useState<string[]>([]);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const handleSeatsSelect = (selectedSeats: string[], total: number) => {
-  //   setSeats(selectedSeats);
-  //   setTotal(total);
-  // };
-
-  // const handlePayment = () => {
-  //   alert(`Pembayaran berhasil. Total: ${formatToRupiah(total)}`);
-  //   setBookedSeats([...bookedSeats, ...seats]);
-  //   setSeats([]);
-  //   setTotal(0);
-  // };
+  const response = await mainAPI.get(`/ticket/movie/${params.omdbId}`);
+  const tickets: TBranchTicket[] = response.data.data;
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Movie Ticket Booking</h1>
-      <TicketForm branches={tickets}></TicketForm>
+      {/* <div>{JSON.stringify(tickets)}</div> */}
+      <TicketSelect branches={tickets}></TicketSelect>
     </div>
   );
 };

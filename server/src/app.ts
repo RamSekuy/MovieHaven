@@ -6,6 +6,7 @@ import userRouter from "./routers/user.router";
 import staffRouter from "./routers/staff.router";
 import cors from "cors";
 import movieRouter from "./routers/movie.router";
+import transactionRouter from "./routers/transaction.router";
 
 export class App {
   private app: Application;
@@ -26,6 +27,8 @@ export class App {
     this.app.use("/user", userRouter.getRouter());
     this.app.use("/staff", staffRouter.getRouter());
     this.app.use("/movie", movieRouter.getRouter());
+    this.app.use("/transaction", transactionRouter.getRouter());
+
   }
   private errorHandler() {
     this.app.use(

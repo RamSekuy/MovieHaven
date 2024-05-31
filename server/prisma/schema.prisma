@@ -121,6 +121,8 @@ model User {
   pointExpire DateTime?
   referalCode String?   @unique
   referalTo   String?
+
+  transaction Transaction[]
 }
 
 model Transaction {
@@ -134,6 +136,7 @@ model Transaction {
 
   ticket Ticket[]
   Staff  Staff?   @relation(fields: [staffId], references: [id])
+  User   User?    @relation(fields: [userId], references: [id])
 }
 
 enum TypeTransaction {

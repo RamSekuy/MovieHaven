@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { IMovie } from "./_model/movie.model";
 import SlidePoster from "./_components/sleedComponent/sleed";
 import Image from "next/image";
+
 const HomePage: React.FC = () => {
   const [movieData, set] = useState<[IMovie[], IMovie[]]>([[], []]);
   const [currentlyPlayingMovies, setCurrentlyPlayingMovies] = useState<IMovie[]>([]);
@@ -52,14 +53,16 @@ const HomePage: React.FC = () => {
               {movieData[0].map((movie) => (
                 <div key={movie.id} className="w-full md:w-1/2 lg:w-1/4 p-2">
                   <a href={`http://localhost:3000/${movie.omdbId}`}>
-                    <div className="bg-red rounded-lg shadow-md overflow-hidden">
-                      <Image
-                        src={movie.poster}
-                        alt={movie.title}
-                        width={500}
-                        height={750}
-                        className="w-full h-auto"
-                      />
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="relative h-0 pb-[150%]">
+                        <Image
+                          src={movie.poster}
+                          alt={movie.title}
+                          layout="fill"
+                          objectFit="cover"
+                          className="absolute top-0 left-0 w-full h-full"
+                        />
+                      </div>
                       <div className="p-4">
                         <h3 className="text-lg font-semibold">{movie.title}</h3>
                         <p className="text-gray-600">{movie.genre}</p>
@@ -78,13 +81,15 @@ const HomePage: React.FC = () => {
               {movieData[1].map((movie) => (
                 <div key={movie.id} className="w-full md:w-1/2 lg:w-1/4 p-2">
                   <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <Image
-                      src={movie.poster}
-                      alt={movie.title}
-                      width={500}
-                      height={750}
-                      className="w-full h-auto"
-                    />
+                    <div className="relative h-0 pb-[150%]">
+                      <Image
+                        src={movie.poster}
+                        alt={movie.title}
+                        layout="fill"
+                        objectFit="cover"
+                        className="absolute top-0 left-0 w-full h-full"
+                      />
+                    </div>
                     <div className="p-4">
                       <h3 className="text-lg font-semibold">{movie.title}</h3>
                       <p className="text-gray-600">{movie.genre}</p>

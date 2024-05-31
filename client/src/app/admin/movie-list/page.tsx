@@ -24,6 +24,7 @@ export default function AdminLogin() {
   return (
     <main className="w-full justify-center items-center h-screen">
       <BackEndForm
+      className="flex justify-center"
         action="/movie"
         method="get"
         onSuccess={(res) => {
@@ -73,8 +74,8 @@ export default function AdminLogin() {
             <h2 className="text-xl mb-4">
               Update Status for {selectedMovie.movie.title}
             </h2>
-            <select className="border-2 border-black mb-4 w-full" name="status">
-              <option value="ComingSoon">Coming Soon</option>
+            <select className="border-2 border-black mb-4 w-full" name="status" defaultValue={selectedMovie.movie.status}>
+              <option value="CommingSoon">Coming Soon</option>
               <option value="CurrentlyPlaying">Currently Playing</option>
               <option value="OutOfTheater">Out Of Theater</option>
             </select>

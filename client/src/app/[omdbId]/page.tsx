@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { IMovie } from "../_model/movie.model";
 import mainAPI from "../_lib/mainApi";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const generateMetadata = async ({
   params,
@@ -11,10 +12,14 @@ export const generateMetadata = async ({
     omdbId: string;
   };
 }): Promise<Metadata> => {
-  const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
-  return {
-    title: result.title,
-  };
+  try {
+    const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
+    return {
+      title: result.title,
+    };
+  } catch (err) {
+    redirect("/backendError");
+  }
 };
 
 type Props = {

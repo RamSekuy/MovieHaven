@@ -17,9 +17,10 @@ export class TicketService {
       include: {
         branch: { select: { location: true } },
         seats: {
+          take:1,
           include: {
             ticket: {
-              select: { time: true },
+              select: { time: true,id:true },
               distinct: ["time"],
               where: {
                 movieId: String(omdbId),
