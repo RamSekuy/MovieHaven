@@ -17,6 +17,7 @@ class ticketRouter extends EntityRouter {
       "/movie/:omdbId",
       ticketController.getByOmdbIdfillterBranchAndTime.bind(ticketController)
     );
+
     this.router.get(
       "/:studioId/",
       ticketController.getByStudio.bind(ticketController)

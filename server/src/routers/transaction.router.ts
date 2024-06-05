@@ -2,7 +2,7 @@
 import transactionController from "../controller/transaction.controller";
 import { EntityRouter } from "./entity.router";
 
-class userRouter extends EntityRouter {
+class transactionRouter extends EntityRouter {
   constructor() {
     super();
     this.initializedRoutes();
@@ -15,4 +15,4 @@ class userRouter extends EntityRouter {
 
   }
 }
-export default new userRouter();
+export default new transactionRouter();

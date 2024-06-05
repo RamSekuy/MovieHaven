@@ -18,22 +18,23 @@ export default function TicketCard({ location, tickets, modalState }: Props) {
         <h1 className="font-semibold">{location}</h1>
       </div>
       <div className="w-full sm:w-[50%] gap-2 flex justify-end flex-wrap">
-        {tickets.map((te, ti) => {
-          const time = new Date(te.time);
-          return (
-            <button
-              key={te.id}
-              title={`${time}`}
-              onClick={(e) => {
-                const time = new Date(e.currentTarget.title);
-                modalState[1]({ isActive: true, data: { time } });
-              }}
-              className="p-1 sm:p-2 hover:bg-blue-200 text-white hover:text-black bg-blue-600 border-black border-2 rounded-md"
-            >
-              {time.getHours() + ":" + time.getMinutes()}
-            </button>
-          );
-        })}
+        {tickets &&
+          tickets.map((te, ti) => {
+            const time = new Date(te.time);
+            return (
+              <button
+                key={te.id}
+                title={`${time}`}
+                onClick={(e) => {
+                  const time = new Date(e.currentTarget.title);
+                  modalState[1]({ isActive: true, data: { time } });
+                }}
+                className="p-1 sm:p-2 hover:bg-blue-200 text-white hover:text-black bg-blue-600 border-black border-2 rounded-md"
+              >
+                {time.getHours() + ":" + time.getMinutes()}
+              </button>
+            );
+          })}
       </div>
     </div>
   );

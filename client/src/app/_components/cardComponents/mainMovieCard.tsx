@@ -10,19 +10,27 @@ export default function MainMovieCard({ onClick, movie }: props) {
       className="min-w-40 w-[250px] md:my-5 bg-white flex flex-col items-center rounded-xl m-auto group"
       onClick={onClick}
     >
-      <div className="w-[200px] my-5 aspect-square object-top object-cover rounded-xl relative">
+      <div className="w-full h-[375px] relative">
         <Image
           src={movie.poster !== "N/A" ? movie.poster : "/placeholder.jpg"}
           alt={movie.title}
-          fill
-          className="rounded-lg"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-xl z-0"
         />
       </div>
-      <hr className="border-grey-200 border-solid border-2 w-full" />
-      <div className="w-full flex flex-col px-5">
-        <h1 className="font-bold w-[160px]">{movie.title}</h1>
-        <h1 className="py-2">{movie.year}</h1>
-        <h1 className="py-2">{movie.status}</h1>
+      <div className="w-full flex flex-col  items-start px-2 mt-2">
+        <h1 className="font-bold text-lg text-center w-full h-20 mb-5">
+          {movie.title}
+        </h1>
+        <h1 className="text-gray-500 text-center w-full h-10">{movie.year}</h1>
+        <h1 className="text-gray-500 text-center w-full h-10">
+          {movie.status === "CommingSoon"
+            ? "Coming Soon"
+            : movie.status === "CurrentlyPlaying"
+            ? "Currently Playing"
+            : movie.status}
+        </h1>
       </div>
     </div>
   );

@@ -12,15 +12,15 @@ export class TicketService {
     const { omdbId } = req.params;
     const { time, branch } = req.query;
     // Fetch the data from the database
-    return await prisma.studio.findMany({
+    const data = await prisma.studio.findMany({
       distinct: ["branchId"],
       include: {
         branch: { select: { location: true } },
         seats: {
-          take:1,
+          take: 1,
           include: {
             ticket: {
-              select: { time: true,id:true },
+              select: { time: true, id: true },
               distinct: ["time"],
               where: {
                 movieId: String(omdbId),
@@ -32,6 +32,8 @@ export class TicketService {
       },
       where: { branch: { location: { contains: time ? String(branch) : "" } } },
     });
+
+    return data;
   }
 
   async getByStudio(req: Request) {
@@ -44,6 +46,7 @@ export class TicketService {
       },
       where: {
         seat: { studioId },
+        time: { equals: String(req.query.time) },
       },
     });
   }

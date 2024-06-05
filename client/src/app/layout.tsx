@@ -18,12 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NavbarToggler/>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <NavbarToggler />
         {children}
-        <Footer/>
-        </body>
-
+        <Footer />
+      </body>
     </html>
   );
 }

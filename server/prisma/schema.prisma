@@ -66,8 +66,8 @@ model StaffSchedule {
   date     DateTime
   shift    Shift
 
-  branch Branch @relation(fields: [branchId], references: [id])
-  staff  Staff  @relation(fields: [staffId], references: [id])
+  branch Branch @relation(fields: [branchId], references: [id],onDelete: Cascade)
+  staff  Staff  @relation(fields: [staffId], references: [id],onDelete: Cascade)
 
   @@unique([branchId, staffId, date, shift])
 }
@@ -81,7 +81,7 @@ enum Shift {
 model Studio {
   id         Int    @id @default(autoincrement())
   branchId   Int
-  branch     Branch @relation(fields: [branchId], references: [id])
+  branch     Branch @relation(fields: [branchId], references: [id],onDelete: Cascade)
   studioName String //Studio 1,2,3
 
   seats Seat[]
@@ -93,7 +93,7 @@ model Seat {
   row      String //A,B,C
   number   Int
 
-  studio Studio   @relation(fields: [studioId], references: [id])
+  studio Studio   @relation(fields: [studioId], references: [id],onDelete: Cascade)
   ticket Ticket[]
 }
 
@@ -105,9 +105,9 @@ model Ticket {
   price         Float
   transactionId Int?
 
-  movie       Movie        @relation(fields: [movieId], references: [omdbId])
-  seat        Seat         @relation(fields: [seatId], references: [id])
-  transaction Transaction? @relation(fields: [transactionId], references: [id])
+  movie       Movie        @relation(fields: [movieId], references: [omdbId], onDelete: Cascade)
+  seat        Seat         @relation(fields: [seatId], references: [id], onDelete: Cascade)
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
 
   @@unique([movieId, time, seatId])
 }
@@ -135,8 +135,8 @@ model Transaction {
   pointsUsed Int?
 
   ticket Ticket[]
-  Staff  Staff?   @relation(fields: [staffId], references: [id])
-  User   User?    @relation(fields: [userId], references: [id])
+  Staff  Staff?   @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  User   User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum TypeTransaction {
@@ -149,7 +149,7 @@ model Rating {
   user_id  Int
   rate     Int
 
-  Movie Movie @relation(fields: [movie_id], references: [id])
+  Movie Movie @relation(fields: [movie_id], references: [id], onDelete: Cascade)
 
   @@id([movie_id, user_id])
 }

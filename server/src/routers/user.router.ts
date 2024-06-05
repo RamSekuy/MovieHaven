@@ -16,6 +16,7 @@ class userRouter extends EntityRouter {
       tokenAuth,
       userController.referralUser.bind(userController)
     );
+    this.router.get("/validate",tokenAuth,userController.validate.bind(userController))
   }
 }
 export default new userRouter();

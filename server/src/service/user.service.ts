@@ -9,6 +9,7 @@ import { Prisma } from "@prisma/client";
 
 export class UserService {
   async register(req: Request) {
+    console.log(req.body);
     const { username, email, password } = await formatRequestBody(req, true);
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() + 3);
@@ -65,13 +66,30 @@ export class UserService {
     if (data == null) throw new Error("Invalid email");
     if (!(await compare(body.password, data.password)))
       throw new Error("Invalid passwod");
-    const result: { password?: string } = { ...data };
+    const result = { id: data.id, type: "user" };
     return generateToken(result, { expiresIn: "1h" });
   }
 
   async referralUser(req: Request) {
     const { referalCode } = req.params;
     return await prisma.user.findMany({ where: { referalTo: referalCode } });
+  }
+
+  async validate(req: Request) {
+    let tokenData;
+    console.log(req.user, req.staff);
+    if (req.user != undefined) {
+      tokenData = await prisma.user.findFirst({
+        where: { id: Number(req.user.id) },
+      });
+    } else if (req.staff != undefined) {
+      tokenData = await prisma.staff.findFirst({
+        where: { id: Number(req.staff.id) },
+      });
+    }
+    return tokenData == null
+      ? null
+      : generateToken(tokenData, { expiresIn: "1h" });
   }
 }
 

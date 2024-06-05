@@ -21,7 +21,5 @@ export async function formatRequestBody(
     const salt = await genSalt(10);
     req.body.password = await hash(password, salt);
   }
-  console.log(req.body);
-
   return req.body;
 }

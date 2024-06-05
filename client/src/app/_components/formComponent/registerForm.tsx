@@ -10,7 +10,8 @@ const RegisterForm: React.FC = () => {
   const router = useRouter();
   const [input, setInput] = useState({});
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    console.log(input)
+    setInput({ ...input, [e.target.id]: e.target.value });
   }
 
   return (
@@ -26,36 +27,12 @@ const RegisterForm: React.FC = () => {
           }}
         >
           <div className="mb-4">
-            <label htmlFor="firstName" className="block text-gray-700">
-              First Name
+            <label htmlFor="username" className="block text-gray-700">
+              Username
             </label>
             <input
               type="text"
-              id="firstName"
-              className="w-full px-4 py-2 border rounded mt-2"
-              onChange={inputHandler}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="lastName" className="block text-gray-700">
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              className="w-full px-4 py-2 border rounded mt-2"
-              onChange={inputHandler}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="address" className="block text-gray-700">
-              Address
-            </label>
-            <input
-              type="text"
-              id="address"
+              id="username"
               className="w-full px-4 py-2 border rounded mt-2"
               onChange={inputHandler}
               required
@@ -86,19 +63,15 @@ const RegisterForm: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="gender" className="block text-gray-700">
-              Gender
+            <label htmlFor="referalCode" className="block text-gray-700">
+              Referal Code
             </label>
-            <select
-              id="gender"
+            <input
+              type="text"
+              id="referalCode"
               className="w-full px-4 py-2 border rounded mt-2"
               onChange={inputHandler}
-              required
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
+            />
           </div>
           <input
             type="submit"

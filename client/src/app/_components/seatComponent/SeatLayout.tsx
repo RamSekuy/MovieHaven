@@ -1,7 +1,7 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import Seat from "./Seat"; // Adjust the import path as needed
+import Seat from "./Seat";
+import mainAPI from "@/app/_lib/mainApi"
 
 type TSeat = {
   studioId: number;
@@ -21,9 +21,8 @@ interface TTicket {
 const SeatLayout: React.FC = () => {
   const [tickets, setTickets] = useState<TTicket[]>([]);
   async function fetchTicket() {
-    const res = await fetch("http://localhost:7000/ticket/1/");
-    const data = await res.json();
-    setTickets(data.data);
+    const data = await mainAPI.get("ticket/1")
+    setTickets(data.data.data);
   }
   useEffect(() => {
     fetchTicket();

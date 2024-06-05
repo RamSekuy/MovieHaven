@@ -9,7 +9,7 @@ class staffRouter extends EntityRouter {
   }
   private initializedRoutes() {
     this.router.post("/s1", staffController.addStaff.bind(staffController));
-    this.router.get("/s2", staffController.staffLogin.bind(staffController));
+    this.router.post("/s2", staffController.staffLogin.bind(staffController));
   }
 }
 export default new staffRouter();

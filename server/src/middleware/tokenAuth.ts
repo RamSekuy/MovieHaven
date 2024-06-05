@@ -4,7 +4,6 @@ import { verify } from "jsonwebtoken";
 
 export function tokenAuth(req: Request, res: Response, next: NextFunction) {
   const token = req.headers["authorization"];
-
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -17,8 +16,8 @@ export function tokenAuth(req: Request, res: Response, next: NextFunction) {
         return res.status(403).json({ message: "Invalid token" });
       }
 
-      if (typeof decodedToken.points) req.user = decodedToken;
-      if (typeof decodedToken.isActive) req.staff = decodedToken;
+      if (decodedToken.type == "user") req.user = decodedToken;
+      if (decodedToken.type == "admin") req.staff = decodedToken;
       next();
     }
   );

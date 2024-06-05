@@ -9,6 +9,7 @@ interface BackEndFormProps {
   className?: string;
   onSuccess: (res: any) => void;
   onFail?: (error: any) => void;
+  data: { [key: string]: any };
 }
 
 const BackEndForm: React.FC<BackEndFormProps> = ({
@@ -18,22 +19,16 @@ const BackEndForm: React.FC<BackEndFormProps> = ({
   className,
   onSuccess,
   onFail,
+  data,
 }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    const data: { [key: string]: any } = {};
-
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
-
     try {
+      console.log(data);
       const res = await mainAPI({
-        method: method,
+        method,
         url: action,
-        data: data,
+        data,
       });
       onSuccess(res);
     } catch (error) {

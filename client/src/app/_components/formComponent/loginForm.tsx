@@ -2,12 +2,13 @@
 import Link from "next/link";
 import BackEndForm from "./backEndForm";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const LoginForm: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [input, setInput] = useState({});
   function inputHandler(e: ChangeEvent<HTMLInputElement>) {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    setInput({ ...input, [e.target.id]: e.target.value });
   }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -18,7 +19,10 @@ const LoginForm: React.FC = () => {
           action="/user/v2"
           method="post"
           onSuccess={(response) => {
-            router.push("/")
+            router.push("/");
+          }}
+          onFail={(err) => {
+            alert("Login Fail");
           }}
         >
           <div className="mb-4">
@@ -27,6 +31,7 @@ const LoginForm: React.FC = () => {
             </label>
             <input
               type="email"
+              id="email"
               name="email"
               className="w-full px-4 py-2 border rounded mt-2"
               onChange={inputHandler}
@@ -39,18 +44,18 @@ const LoginForm: React.FC = () => {
             </label>
             <input
               type="password"
+              id="password"
               name="password"
               className="w-full px-4 py-2 border rounded mt-2"
               onChange={inputHandler}
               required
             />
           </div>
-          <button
+          <input
+            value={"Login"}
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-          >
-            Login
-          </button>
+          />
         </BackEndForm>
         <div className="mt-4 text-center">
           <p>

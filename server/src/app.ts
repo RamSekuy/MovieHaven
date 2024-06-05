@@ -7,6 +7,7 @@ import staffRouter from "./routers/staff.router";
 import cors from "cors";
 import movieRouter from "./routers/movie.router";
 import transactionRouter from "./routers/transaction.router";
+import branchRouter from "./routers/branch.router";
 
 export class App {
   private app: Application;
@@ -28,6 +29,7 @@ export class App {
     this.app.use("/staff", staffRouter.getRouter());
     this.app.use("/movie", movieRouter.getRouter());
     this.app.use("/transaction", transactionRouter.getRouter());
+    this.app.use("/branch", branchRouter.getRouter());
 
   }
   private errorHandler() {

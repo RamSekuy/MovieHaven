@@ -10,6 +10,7 @@ export type TRoute = {
   user: "/user" | `/user/${string}`;
   staff: "/staff" | `/staff/${string}`;
   ticket: "/ticket" | `/ticket/${string}` | "/ticket/movie#omdbId";
+  branch: "/branch" | `/branch/${string}`;
 };
 
 interface IMainApi extends AxiosInstance {

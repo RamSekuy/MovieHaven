@@ -19,7 +19,7 @@ export class TicketController {
     try {
       const data = await userService.login(req);
 
-      res.cookie("uauth", data, { maxAge: 3600 * 1000 }).send({
+      res.cookie("rauth", data, { maxAge: 3600 * 1000 }).send({
         message: "success login",
       });
     } catch (error) {
@@ -32,6 +32,18 @@ export class TicketController {
       const data = await userService.referralUser(req);
       res.send({
         message: "fetch referal",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async validate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await userService.validate(req);
+      res.send({
+        message: "validation success",
         data,
       });
     } catch (error) {

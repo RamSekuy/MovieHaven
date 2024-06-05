@@ -1,21 +1,20 @@
 "use client";
 import { useState } from "react";
-import SeatSelector from "@/app/_components/ticketComponent/SeatSelector";
-import BranchSelector from "@/app/_components/ticketComponent/BranchSelector";
-import TimeSelector from "@/app/_components/ticketComponent/TimeSelector";
 import BackEndForm from "@/app/_components/formComponent/backEndForm";
 import { ChangeEvent } from "react";
 import { ITicket } from "@/app/_model/ticket.model";
 import { TBranchTicket } from "@/app/_model/branchTicket.model";
 import TicketCard from "@/app/_components/ticketComponent/ticketCard";
 import mainAPI from "@/app/_lib/mainApi";
-import Modal from "@/app/_components/ticketComponent/Modal"
+import Modal from "@/app/_components/ticketComponent/Modal";
+import SeatLayout from "@/app/_components/seatComponent/SeatLayout";
 
 interface Props {
   branches: TBranchTicket[];
 }
 
 export default function TicketSelect({ branches }: Props) {
+  console.log(branches)
   const [input, setInput] = useState<{ [key: string]: any }>({});
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -38,8 +37,14 @@ export default function TicketSelect({ branches }: Props) {
       ))}
 
       {/* SelectSeat Modal */}
-      <Modal isOpen={modal.isActive} onClose={()=>{setModal({...modal,isActive:false})}}>
-        <input type="text" />
+      <Modal
+        isOpen={modal.isActive}
+        onClose={() => {
+          setModal({ ...modal, isActive: false });
+        }}
+      >
+        <SeatLayout />
+
       </Modal>
     </>
   );

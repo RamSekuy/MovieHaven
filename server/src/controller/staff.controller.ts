@@ -18,7 +18,7 @@ export class StaffController {
   async staffLogin(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await staffService.staffLogin(req);
-      res.send({
+      res.cookie("rauth", data, { maxAge: 3600 * 1000 }).send({
         message: "success login Staff",
         data,
       });
