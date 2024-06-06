@@ -5,13 +5,19 @@ import { Dispatch, SetStateAction } from "react";
 type Props = {
   tickets: ITicket[];
   location: string;
+  studioId: number;
   modalState: [
-    { isActive: boolean; data: any },
-    Dispatch<SetStateAction<{ isActive: boolean; data: any }>>
+    { studioId: number; time: Date } | undefined,
+    Dispatch<SetStateAction<{ studioId: number; time: Date } | undefined>>
   ];
 };
 
-export default function TicketCard({ location, tickets, modalState }: Props) {
+export default function TicketCard({
+  location,
+  tickets,
+  modalState,
+  studioId,
+}: Props) {
   return (
     <div className=" w-full my-2 p-3 flex justify-start md:justify-between flex-wrap border-2 border-black bg-white">
       <div className="w-full sm:w-[50%] h-full">
@@ -27,7 +33,7 @@ export default function TicketCard({ location, tickets, modalState }: Props) {
                 title={`${time}`}
                 onClick={(e) => {
                   const time = new Date(e.currentTarget.title);
-                  modalState[1]({ isActive: true, data: { time } });
+                  modalState[1]({studioId,time});
                 }}
                 className="p-1 sm:p-2 hover:bg-blue-200 text-white hover:text-black bg-blue-600 border-black border-2 rounded-md"
               >

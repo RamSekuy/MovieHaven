@@ -34,7 +34,7 @@ const TicketPage = async ({ params }: Props) => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Movie Ticket Booking</h1>
       {tickets.length ? (
-        <TicketSelect branches={tickets}></TicketSelect>
+        <TicketSelect studios={tickets}></TicketSelect>
       ) : (
         <h1>No Ticket Available</h1>
       )}

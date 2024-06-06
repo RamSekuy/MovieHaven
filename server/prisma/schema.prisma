@@ -134,6 +134,7 @@ model Transaction {
   invoiceNum String
   type       TypeTransaction
   pointsUsed Int?
+  total      Float
 
   ticket Ticket[]
   Staff  Staff?   @relation(fields: [staffId], references: [id], onDelete: Cascade)
