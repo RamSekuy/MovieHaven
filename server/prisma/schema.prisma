@@ -66,8 +66,8 @@ model StaffSchedule {
   date     DateTime
   shift    Shift
 
-  branch Branch @relation(fields: [branchId], references: [id],onDelete: Cascade)
-  staff  Staff  @relation(fields: [staffId], references: [id],onDelete: Cascade)
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  staff  Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
 
   @@unique([branchId, staffId, date, shift])
 }
@@ -81,7 +81,7 @@ enum Shift {
 model Studio {
   id         Int    @id @default(autoincrement())
   branchId   Int
-  branch     Branch @relation(fields: [branchId], references: [id],onDelete: Cascade)
+  branch     Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
   studioName String //Studio 1,2,3
 
   seats Seat[]
@@ -93,7 +93,7 @@ model Seat {
   row      String //A,B,C
   number   Int
 
-  studio Studio   @relation(fields: [studioId], references: [id],onDelete: Cascade)
+  studio Studio   @relation(fields: [studioId], references: [id], onDelete: Cascade)
   ticket Ticket[]
 }
 
@@ -130,6 +130,7 @@ model Transaction {
   staffId    Int?
   userId     Int?
   date       DateTime        @default(now())
+  isPaid     Boolean         @default(false)
   invoiceNum String
   type       TypeTransaction
   pointsUsed Int?

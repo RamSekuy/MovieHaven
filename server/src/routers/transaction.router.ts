@@ -9,9 +9,9 @@ class transactionRouter extends EntityRouter {
   }
   private initializedRoutes() {
     this.router.get("/", transactionController.getAllTransaction.bind(transactionController));
-    this.router.get("/:id", transactionController.getTransactionById.bind(transactionController));
+    this.router.get("/:idTransaction", transactionController.getTransactionById.bind(transactionController));
     this.router.post("/t1", transactionController.addTransaction.bind(transactionController));
-    this.router.delete("/:id", transactionController.deleteTransaction.bind(transactionController));
+    this.router.delete("/:idTransaction", transactionController.deleteTransaction.bind(transactionController));
 
   }
 }

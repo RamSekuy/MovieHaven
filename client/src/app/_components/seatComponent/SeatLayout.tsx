@@ -1,32 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Seat from "./Seat";
-import mainAPI from "@/app/_lib/mainApi"
+import mainAPI from "@/app/_lib/mainApi";
+import ITicket from "@/app/_model/ticket.model";
 
-type TSeat = {
+
+type prop = {
   studioId: number;
-  row: string;
-  number: number;
-};
-
-interface TTicket {
-  price: number;
-  movieId: number;
-  seatId: number;
   time: Date;
-  seat: TSeat;
-  transactionId?: number;
-}
-
-const SeatLayout: React.FC = () => {
-  const [tickets, setTickets] = useState<TTicket[]>([]);
+};
+const SeatLayout: React.FC = ({ studioId, time }: prop) => {
+  const [tickets, setTickets] = useState(<ITicket[]|null>(null))
   async function fetchTicket() {
-    const data = await mainAPI.get("ticket/1")
-    setTickets(data.data.data);
+    const data = await mainAPI.get(`ticket/${studioId}`, { params: { time } });
+    setLoading(false);
   }
   useEffect(() => {
+    setLoading(true);
     fetchTicket();
-  }, []);
+  }, [studioId, time]);
 
   const seatMap = tickets.reduce((acc: any, ticket: TTicket) => {
     const { row, number } = ticket.seat;

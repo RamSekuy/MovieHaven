@@ -38,6 +38,18 @@ export class TransactionController {
     }
   }
 
+  async updateTransaction(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await transactionService.updateTransaction(req);
+      res.send({
+        message: "add transaction success",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async deleteTransaction(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await transactionService.deleteTransaction(req);
