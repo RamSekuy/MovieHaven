@@ -1,4 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { getCookie } from "cookies-next";
+import { MAIN_API } from "../_config/config";
 
 export type TMainApiRespone = {
   message: string;
@@ -38,26 +40,23 @@ interface IMainApi extends AxiosInstance {
     data?: D,
     config?: AxiosRequestConfig<D>
   ): Promise<R>;
-  postForm<T = TMainApiRespone, R = AxiosResponse<T>, D = any>(
-    url: TRoute[keyof TRoute],
-    data?: D,
-    config?: AxiosRequestConfig<D>
-  ): Promise<R>;
-  putForm<T = TMainApiRespone, R = AxiosResponse<T>, D = any>(
-    url: TRoute[keyof TRoute],
-    data?: D,
-    config?: AxiosRequestConfig<D>
-  ): Promise<R>;
-  patchForm<T = TMainApiRespone, R = AxiosResponse<T>, D = any>(
-    url: TRoute[keyof TRoute],
-    data?: D,
-    config?: AxiosRequestConfig<D>
-  ): Promise<R>;
 }
 
-const mainAPI = axios.create({
-  baseURL: "http://localhost:7000",
-  withCredentials: true,
-}) as IMainApi;
+class MainAPI {
+  private api_url;
+  constructor(api_url: `http://${string}`) {
+    this.api_url = api_url;
+  }
+  get mainAPI() {
+    const token = getCookie("access_token") || "0";
+    return axios.create({
+      baseURL: this.api_url,
+      withCredentials: true,
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }) as IMainApi;
+  }
+}
 
-export default mainAPI;
+export default new MainAPI(MAIN_API).mainAPI;
