@@ -33,7 +33,7 @@ export default async function MovieDetailPage({ params }: Props) {
     await mainAPI.get(`/movie/${params.omdbId}`)
   ).data.data;
   return (
-    <main className="w-full flex flex-col items-center h-auto p-4">
+    <main className="w-full flex flex-col items-center h-auto pt-4 min-h-screen">
       <div className="w-full max-w-4xl">
         <div className="flex flex-col md:flex-row md:space-x-6">
           <div className="w-full md:w-1/3 flex-shrink-0">

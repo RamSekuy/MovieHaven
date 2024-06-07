@@ -119,7 +119,7 @@ model User {
   password    String
   points      Int       @default(0)
   pointExpire DateTime?
-  referalCode String?   @unique
+  referalCode String?
   referalTo   String?
 
   transaction Transaction[]
@@ -131,7 +131,7 @@ model Transaction {
   userId     Int?
   date       DateTime        @default(now())
   isPaid     Boolean         @default(false)
-  invoiceNum String
+  invoiceNum String          @unique
   type       TypeTransaction
   pointsUsed Int?
   total      Float

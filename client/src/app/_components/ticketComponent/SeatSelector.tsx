@@ -1,10 +1,7 @@
 import mainAPI from "@/app/_lib/mainApi";
-import { FC, useState, useEffect } from "react";
-
-interface SeatSelectorProps {
-  studioId: number;
-  time: Date;
-}
+import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "@/app/_lib/redux/hooks";
+import { setSelectTicket } from "@/app/_lib/redux/slices/selectTicket.slice";
 
 const p = [
   {
@@ -72,10 +69,12 @@ const p = [
   },
 ];
 
-const SeatSelector = ({ studioId, time }: SeatSelectorProps) => {
+const SeatSelector = () => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [seats, setSeats] = useState<typeof p>([]);
-
+  const selectTicket = useAppSelector((state) => state.selectTicket);
+  const { studioId, time } = selectTicket;
+  const dispatch = useAppDispatch();
   const ticketPrice = 25000; // Harga tiket per seat
   const fetchSeats = async () => {
     const res = await mainAPI.get(`/ticket/${studioId}`, { params: { time } });
@@ -95,13 +94,34 @@ const SeatSelector = ({ studioId, time }: SeatSelectorProps) => {
       <div className="flex flex-col w-full">
         {getUniqueRows(seats).map((a, aidx) => (
           <>
-            <div className="w-full flex flex-nowrap">
+            <div className="w-full flex flex-nowrap" key={aidx}>
               {seats.map((e, i) => {
+                const booked = e.transactionId;
+                const selected =
+                  selectTicket.tickets.findIndex((te) => te.id == e.id) + 1;
                 return (
                   e.seat.row == a && (
                     <button
+                      disabled={Boolean(booked)}
                       key={e.id}
-                      className={`p-2 border rounded w-[50px]`}
+                      onClick={(event) => {
+                        const selectedTickets = selected
+                          ? selectTicket.tickets.filter((te) => te.id !== e.id)
+                          : [...selectTicket.tickets, e];
+                        dispatch(
+                          setSelectTicket({
+                            ...selectTicket,
+                            tickets: selectedTickets,
+                          })
+                        );
+                      }}
+                      className={`p-2 border rounded w-[50px] ${
+                        booked
+                          ? "bg-gray-500"
+                          : selected
+                          ? "bg-red-600"
+                          : "bg-green-400"
+                      }`}
                     >
                       {e.seat.row + String(e.seat.number)}
                     </button>

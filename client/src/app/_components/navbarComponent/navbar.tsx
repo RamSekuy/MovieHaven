@@ -1,18 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export function NavbarToggler() {
   return (
-    <nav className="w-full flex sticky top-0 z-50">
+    <nav className="w-full sticky top-0 z-50">
       <Navbar />
     </nav>
   );
 }
 
-function Navbar({ className }: { className?: string }) { 
+function Navbar({ className }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  
+  useEffect(() => {
+    setIsOpen(false); 
+  }, []);
+  
   return (
     <div
       className={`w-full rounded-md border border-transparent bg-gradient-to-r from-oldblue via-navy to-oldblue shadow-input px-4 py-4 md:px-6 ${className}`}
@@ -44,7 +49,7 @@ function Navbar({ className }: { className?: string }) {
         </div>
       </div>
       {isOpen && (
-        <div className="lg:hidden mt-2 bg-slate-400 p-4 rounded-md shadow-lg">
+        <div key="dropdown" className="lg:hidden mt-2 bg-slate-400 p-4 rounded-md shadow-lg">
           <div className="flex flex-col gap-5 items-center">
             <Link href="/nowShowing" className="text-white">
               Now Playing

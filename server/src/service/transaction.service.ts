@@ -1,8 +1,9 @@
 /** @format */
 import { Request } from "express";
 import { prisma } from "../lib/prisma";
-import { Prisma, Transaction, TypeTransaction } from "@prisma/client";
+import { Prisma, Ticket, Transaction, TypeTransaction } from "@prisma/client";
 import { userExpire } from "../utils/userExpire";
+import { generateReferal } from "../utils/generateReferal";
 
 class TransactionService {
   async getAllTransaction(req: Request) {
@@ -21,46 +22,65 @@ class TransactionService {
   }
 
   async getTransactionById(req: Request) {
-    const { id } = req.params;
-    return await prisma.transaction.findUnique({ where: { id: Number(id) } });
+    const { idTransaction } = req.params;
+    return await prisma.transaction.findUnique({
+      where: { id: Number(idTransaction) },
+    });
+  }
+  async getTransactionByInvoiceNum(req: Request) {
+    const { invoiceNum } = req.params;
+    return await prisma.transaction.findUnique({
+      where: { invoiceNum: invoiceNum },
+    });
   }
 
   async addTransaction(req: Request) {
-    // const { date, invoiceNum, type, staffId, userId,  pointsUsed, ticketIds } =
-    //   req.body;
-    // let user = await userExpire(Number(userId));
-    // if(!pointsUsed){user = undefined}
+    const { type, staffId, userId, pointsUsed } = req.body;
 
-    // if (!Object.values(TypeTransaction).includes(type as TypeTransaction)) {
-    //   throw new Error("Invalid type for transaction");
-    // }
+    if (!Array.isArray(req.body.ticketIds)) throw new Error("Invalid tickets");
+    const ticketIds = req.body.ticketIds as Ticket[];
+    let user = await userExpire(Number(userId));
+    if (!pointsUsed) {
+      user = undefined;
+    }
 
-    // if (type === "offline" && !staffId) {
-    //   throw new Error("staffId must be provided for offline transactions");
-    // }
+    if (!Object.values(TypeTransaction).includes(type as TypeTransaction)) {
+      throw new Error("Invalid type for transaction");
+    }
 
-    // if (type === "online" && !userId) {
-    //   throw new Error("userId must be provided for online transactions");
-    // }
+    if (type === "offline" && !staffId) {
+      throw new Error("staffId must be provided for offline transactions");
+    }
 
-    // const ticketConnections = ticketIds?.map((ticketId: number) => ({ id: ticketId })) || [];
+    if (type === "online" && !userId) {
+      throw new Error("userId must be provided for online transactions");
+    }
 
-    // const data: Prisma.TransactionCreateInput = {
-    //   date: new Date(date),
-    //   invoiceNum,
-    //   type: type as TypeTransaction,
-    //   total:0,
-    //   ticket: { connect: ticketConnections,},
-    //   Staff:
-    //     type === "offline" ? { connect: { id: Number(staffId) } } : undefined,
-    //   User: type === "online" ? { connect: { id: Number(userId) } } : undefined,
-    //   pointsUsed: user?.points ? user.points : 0,
-    // };
+    const ticketConnections =
+      ticketIds?.map((ticketId: Ticket) => ({ id: ticketId.id })) || [];
 
-    // await prisma.$transaction(async (prisma) => {
-    //   await prisma.transaction.create({ data });
-    //   user?await prisma.user.update({where:{id:userId},data:{...user,points:user.points}})
-    // });
+    const id = Number(userId) | Number(staffId);
+    const data: Prisma.TransactionCreateInput = {
+      invoiceNum: `INV-${new Date().toISOString() + id}`,
+      type: type as TypeTransaction,
+      total: ticketIds.reduce((p, n) => p + n.price, 0),
+      ticket: { connect: ticketConnections },
+      Staff:
+        type === "offline" ? { connect: { id: Number(staffId) } } : undefined,
+      User: type === "online" ? { connect: { id: Number(userId) } } : undefined,
+      pointsUsed: user?.points ? user.points : 0,
+    };
+    let result;
+    await prisma.$transaction(async (prisma) => {
+      result = await prisma.transaction.create({ data });
+      user
+        ? await prisma.user.update({
+            where: { id: Number(userId) },
+            data: { ...user, points: user.points },
+          })
+        : null;
+    });
+    return result;
   }
 
   async updateTransaction(req: Request) {

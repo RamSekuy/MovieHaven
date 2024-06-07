@@ -25,6 +25,17 @@ export class TransactionController {
       next(error);
     }
   }
+  async getTransactionByInvoiceNum(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await transactionService.getTransactionByInvoiceNum(req);
+      res.send({
+        message: "fetch transaction",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async addTransaction(req: Request, res: Response, next: NextFunction) {
     try {

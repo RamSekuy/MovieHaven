@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
         <div className="container hover:shadow-[0_35px_60px_-15px_rgba(15,23,42)] transition-shadow duration-300 mx-auto flex justify-center flex-col max-w-[850px] p-4">
           {/* Slide Poster Section for Currently Playing Movies */}
           {currentlyPlayingMovies.length > 0 && (
-            <div className="mb-8 hover:shadow-xl">
+            <div className="mb-8">
               <h2 className="text-2xl font-semibold mb-4 ">Currently Playing</h2>
               <SlidePoster
                 movies={currentlyPlayingMovies}
