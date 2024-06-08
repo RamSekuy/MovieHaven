@@ -3,12 +3,19 @@ import Image from "next/image";
 import { IMovie } from "@/app/_model/movie.model";
 import mainAPI from "@/app/_lib/mainApi"
 
+<<<<<<< HEAD
 const NowShowingPage = async({
+=======
+const NowShowingPage = ({
+>>>>>>> 14084398c6503adf062ea3829eba8698ea58a598
   nowShowingMovies,
 }: {
   nowShowingMovies: IMovie[];
 }) => {
+<<<<<<< HEAD
   nowShowingMovies = (await mainAPI.get('/movie',{params:{status:"currentlyPlaying"}})).data.data
+=======
+>>>>>>> 14084398c6503adf062ea3829eba8698ea58a598
   return (
     <div className="bg-white min-h-screen">
       <main className="bg-gray-100 min-h-screen">
