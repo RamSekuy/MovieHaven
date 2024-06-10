@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { IMovie } from "@/app/_model/movie.model";
-import mainAPI from "@/app/_lib/mainApi"
+import mainApi from "@/app/_lib/mainApi";
+import Link from "next/link";
 
-<<<<<<< HEAD
-const NowShowingPage = async({
-=======
-const NowShowingPage = ({
->>>>>>> 14084398c6503adf062ea3829eba8698ea58a598
+const NowShowingPage = async ({
   nowShowingMovies,
 }: {
-  nowShowingMovies: IMovie[];
+  nowShowingMovies?: IMovie[];
 }) => {
-<<<<<<< HEAD
-  nowShowingMovies = (await mainAPI.get('/movie',{params:{status:"currentlyPlaying"}})).data.data
-=======
->>>>>>> 14084398c6503adf062ea3829eba8698ea58a598
+  nowShowingMovies =
+    nowShowingMovies ||
+    (await mainApi.get("/movie", { params: { status: "CurrentlyPlaying" } }))
+      .data.data;
   return (
     <div className="bg-white min-h-screen">
       <main className="bg-gray-100 min-h-screen">
         <div className="container mx-auto flex justify-center flex-col max-w-[800px] p-4">
           <h2 className="text-2xl font-semibold mb-4">Now Showing</h2>
           <div className="flex flex-wrap justify-start mx-2">
-            {nowShowingMovies.map((movie) => (
+            {nowShowingMovies?.map((movie) => (
               <div
                 key={movie.id}
                 className="w-full sm:w-1/2 md:w-1/3 xl:w-[250px]  p-2"
               >
-                <a href={`http://localhost:3000/${movie.omdbId}`}>
+                <Link href={`/${movie.omdbId}`}>
                   <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                     <div className="relative h-0 pb-[150%]">
                       <Image
@@ -45,7 +42,7 @@ const NowShowingPage = ({
                       <p className="text-gray-600">{movie.age}</p>
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

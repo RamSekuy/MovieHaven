@@ -11,7 +11,7 @@ class transactionRouter extends EntityRouter {
     this.router.get("/", transactionController.getAllTransaction.bind(transactionController));
     this.router.get("/invoice/:invoiceNum", transactionController.getTransactionByInvoiceNum.bind(transactionController));
     this.router.get("/:idTransaction", transactionController.getTransactionById.bind(transactionController));
-
+    this.router.patch("/invoice/:idTransaction", transactionController.updateTransaction.bind(transactionController));
     this.router.post("/t1", transactionController.addTransaction.bind(transactionController));
     this.router.delete("/:idTransaction", transactionController.deleteTransaction.bind(transactionController));
 

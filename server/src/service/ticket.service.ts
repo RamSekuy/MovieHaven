@@ -1,11 +1,23 @@
 /** @format */
 import { Request } from "express";
 import { prisma } from "../lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma, Ticket } from "@prisma/client";
 
 export class TicketService {
   async getAll(req: Request) {
-    return await prisma.ticket.findMany();
+    const { omdbId, time, branchId, studioId } = req.query;
+    const data = await prisma.ticket.findMany({
+      where: {
+        ...(omdbId ? { movieId: String(omdbId) } : {}),
+        ...(time ? { time: String(time) } : {}),
+        ...(studioId ? { seat: { studioId: Number(studioId) } } : {}),
+        ...(branchId
+          ? { seat: { studio: { branchId: Number(branchId) } } }
+          : {}),
+      },
+    });
+
+    return data;
   }
 
   async getByOmdbIdfillterBranchAndTime(req: Request) {
@@ -15,7 +27,7 @@ export class TicketService {
     const data = await prisma.studio.findMany({
       distinct: ["branchId"],
       include: {
-        branch: { select: { location: true } },
+        branch: true,
         seats: {
           take: 1,
           include: {
@@ -65,6 +77,35 @@ export class TicketService {
       movieId: String(omdbId),
     }));
     await prisma.ticket.createMany({ data });
+  }
+
+  async updateTicket(req: Request) {
+    const a = req.body.newTickets as unknown;
+    const newTickets = a as Ticket[];
+    return await prisma.$transaction(async (prisma) => {
+      const updatedTickets = newTickets.map(async (ticket) => {
+        return prisma.ticket.update({
+          where: { id: ticket.id },
+          data: { ...ticket },
+        });
+      });
+
+      return Promise.all(updatedTickets);
+    });
+  }
+
+  async deleteTicket(req: Request) {
+    const a = req.body.targetTickets as unknown;
+    const targetTickets = a as Ticket[];
+    return await prisma.$transaction(async (prisma) => {
+      const updatedTickets = targetTickets.map(async (ticket) => {
+        return prisma.ticket.delete({
+          where: { id: ticket.id },
+        });
+      });
+
+      return Promise.all(updatedTickets);
+    });
   }
 }
 

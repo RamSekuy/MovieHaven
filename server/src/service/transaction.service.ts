@@ -84,18 +84,18 @@ class TransactionService {
   }
 
   async updateTransaction(req: Request) {
-    const { id } = req.params;
+    const { idTransaction } = req.params;
     const { isPaid } = req.body;
 
     return await prisma.transaction.update({
-      where: { id: Number(id) },
+      where: { id: Number(idTransaction ) },
       data: { isPaid: Boolean(isPaid) },
     });
   }
 
   async deleteTransaction(req: Request) {
-    const { id } = req.params;
-    await prisma.transaction.delete({ where: { id: Number(id) } });
+    const { idTransaction  } = req.params;
+    await prisma.transaction.delete({ where: { id: Number(idTransaction) } });
   }
 }
 

@@ -115,7 +115,7 @@ const SeatSelector = () => {
                           })
                         );
                       }}
-                      className={`p-2 border rounded w-[50px] ${
+                      className={`p-2 border rounded min-w-[50px] ${
                         booked
                           ? "bg-gray-500"
                           : selected

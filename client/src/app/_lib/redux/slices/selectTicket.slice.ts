@@ -23,9 +23,7 @@ export const selectTicket = createSlice({
   name: "selectTicket",
   initialState,
   reducers: {
-    setSelectTicket: (state, action) => {
-      console.log(action.payload);
-
+    setSelectTicket: (state, action: IState | undefined) => {
       if (!action.payload) {
         state = { tickets: [] };
       } else {

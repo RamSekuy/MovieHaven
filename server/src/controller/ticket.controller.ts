@@ -28,7 +28,11 @@ export class TicketController {
     //   }
   }
 
-  async getByOmdbIdfillterBranchAndTime(req: Request, res: Response, next: NextFunction) {
+  async getByOmdbIdfillterBranchAndTime(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const data = await ticketService.getByOmdbIdfillterBranchAndTime(req);
       res.send({
@@ -57,6 +61,30 @@ export class TicketController {
       const data = await ticketService.addTicketsForStudio(req);
       res.status(201).send({
         message: "kata kata mutiara",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateTicket(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await ticketService.updateTicket(req);
+      res.status(200).send({
+        message: "Ticket update",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteTicket(req: Request, res: Response, next: NextFunction) {
+    try {
+      const data = await ticketService.deleteTicket(req);
+      res.status(200).send({
+        message: "Ticket delete",
         data,
       });
     } catch (error) {

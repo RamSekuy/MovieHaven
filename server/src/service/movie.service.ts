@@ -5,9 +5,16 @@ import { Prisma } from "@prisma/client";
 
 export class MovieService {
   async getAllMovie(req: Request) {
-    const { title } = req.query;
-    let condition: Prisma.MovieFindManyArgs = {};
-    if (title) condition = { where: { title: { contains: String(title) } } };
+    const { title, status } = req.query as { [x: string]: string | undefined };
+    const condition: Prisma.MovieFindManyArgs = {
+      where: {
+        ...(title ? { title } : {}),
+        ...(status
+          ? { status: status as Prisma.EnumMovieStatusFilter<"Movie"> }
+          : {}),
+      },
+    };
+
     return await prisma.movie.findMany(condition);
   }
 

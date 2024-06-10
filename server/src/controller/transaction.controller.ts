@@ -53,7 +53,7 @@ export class TransactionController {
     try {
       const data = await transactionService.updateTransaction(req);
       res.send({
-        message: "add transaction success",
+        message: "transaction is paid",
         data,
       });
     } catch (error) {

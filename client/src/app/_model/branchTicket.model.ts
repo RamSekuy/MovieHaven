@@ -5,6 +5,7 @@ export type TBranchTicket = {
   branchId: number;
   studioName: string;
   branch: {
+    id: number;
     location: string;
   };
   seats: {

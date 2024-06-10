@@ -32,13 +32,14 @@ export default function AdminLogin() {
 
   async function addMovie(imdbID: string) {
     setLoading(true);
-    const response = await fetch(`http://localhost:7000/movie/${imdbID}`, {
+    const response = await fetch(`http://localhost:8000/movie/${imdbID}`, {
       method: "POST",
     });
+
     if (response.ok) {
       setMessage("Success Add");
       // Ubah tombol menjadi warna biru dan teks menjadi "Film Added"
-      const newData = data.map(movie => {
+      const newData = data.map((movie) => {
         if (movie.imdbID === imdbID) {
           return { ...movie, added: true };
         }
@@ -127,7 +128,9 @@ export default function AdminLogin() {
               />
             </div>
             <div className="w-full flex flex-col  items-start px-2 mt-2">
-              <h1 className="font-bold text-lg text-center w-full h-20 mb-5">{e.Title}</h1>
+              <h1 className="font-bold text-lg text-center w-full h-20 mb-5">
+                {e.Title}
+              </h1>
               <p className="text-gray-500 text-center w-full h-10 ">{e.Year}</p>
               {/* Tambahkan kondisi untuk menampilkan tombol sesuai status film */}
               {e.added ? (

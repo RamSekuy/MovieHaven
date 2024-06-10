@@ -4,7 +4,7 @@ import { TRoute } from "@/app/_lib/mainApi";
 
 interface BackEndFormProps {
   action: TRoute[keyof TRoute];
-  method: string;
+  method: "get" | "post" | "patch" | "delete";
   children: ReactNode;
   className?: string;
   onSuccess: (res: any) => void;

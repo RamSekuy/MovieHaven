@@ -62,7 +62,7 @@ const AdminLoginForm: React.FC = () => {
             want to add staff?{" "}
             <Link href="/admin-register" legacyBehavior>
               <a className="text-blue-500">Register</a>
-            </Link>
+            </Link>800
           </p>
         </div>
       </div>

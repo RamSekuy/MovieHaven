@@ -1,18 +1,23 @@
 import Image from "next/image";
 import { IMovie } from "@/app/_model/movie.model";
+import mainAPI from "@/app/_lib/mainApi";
 
-const ComingSoonPage = ({
+const ComingSoonPage = async ({
   comingSoonMovies,
 }: {
-  comingSoonMovies: IMovie[];
+  comingSoonMovies?: IMovie[];
 }) => {
+  comingSoonMovies =
+    comingSoonMovies ||
+    (await mainAPI.get("/movie", { params: { status: "CommingSoon" } })).data
+      .data;
   return (
     <div className="bg-gray-100 min-h-screen">
       <main className="bg-gray-100 min-h-screen">
         <div className="container mx-auto flex justify-center flex-col max-w-[800px] p-4">
           <h2 className="text-2xl font-semibold mb-4">Coming Soon</h2>
           <div className="flex flex-wrap justify-start mx-2">
-            {comingSoonMovies.map((movie) => (
+            {comingSoonMovies?.map((movie) => (
               <div
                 key={movie.id}
                 className="w-full sm:w-1/2 md:w-1/3 xl:w-[250px] p-2"

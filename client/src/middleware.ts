@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mainAPI from "@/app/_lib/mainApi";
 import { jwtDecode } from "jwt-decode";
+import { MAIN_API } from "@/app/_config/config";
 
 const adminOnly = ["/admin/:path*"];
 const userOnly = [""];

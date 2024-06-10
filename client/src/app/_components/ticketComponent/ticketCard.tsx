@@ -1,45 +1,32 @@
 "use client";
-import { MouseEvent, useEffect } from "react";
 import { ITicket } from "@/app/_model/ticket.model";
-import { useAppDispatch } from "@/app/_lib/redux/hooks";
-import { setSelectTicket } from "@/app/_lib/redux/slices/selectTicket.slice";
+import BuyTicketButton from "./buyTicketButton";
+import Link from "next/link";
 
 type Props = {
   tickets: ITicket[];
-  location: string;
+  branch: any;
   studioId: number;
+  studioName: string;
 };
 
-export default function TicketCard({ location, tickets, studioId }: Props) {
-  const dispatch = useAppDispatch();
-  const userLocale = navigator.language || "en-US";
-
+export default function TicketCard({
+  branch,
+  tickets,
+  studioId,
+  studioName,
+}: Props) {
   return (
     <div className=" w-full my-2 p-3 flex justify-start md:justify-between flex-wrap border-2 border-black bg-white">
       <div className="w-full sm:w-[50%] h-full">
-        <h1 className="font-semibold">{location}</h1>
+        <h1 className="font-semibold">{branch.location}</h1>
+        <h2 className="">{studioName}</h2>
       </div>
       <div className="w-full sm:w-[50%] gap-2 flex justify-end flex-wrap">
         {tickets &&
           tickets.map((te, ti) => {
             const time = new Date(te.time).toISOString();
-            return (
-              <button
-                key={te.id}
-                title={`${time}`}
-                onClick={(e) => {
-                  dispatch(
-                    setSelectTicket({ time, studioId, selectTicket:[]})
-                  );
-                }}
-                className="p-1 sm:p-2 hover:bg-blue-200 text-white hover:text-black bg-blue-600 border-black border-2 rounded-md"
-              >
-                {new Date(time).toLocaleTimeString(userLocale, {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </button>
-            );
+            return <BuyTicketButton studioId={studioId} time={time} key={ti} />;
           })}
       </div>
     </div>
