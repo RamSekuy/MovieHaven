@@ -31,6 +31,7 @@ const TicketPage = async ({ params }: Props) => {
   const tickets: TBranchTicket[] = response.data.data;
 
   return (
+    <div className="min-h-screen">
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Movie Ticket Booking</h1>
       {tickets.length ? (
@@ -38,6 +39,7 @@ const TicketPage = async ({ params }: Props) => {
       ) : (
         <h1>No Ticket Available</h1>
       )}
+    </div>
     </div>
   );
 };

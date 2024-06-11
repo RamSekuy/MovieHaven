@@ -52,7 +52,7 @@ export default function TicketSelect({ studios }: Props) {
           onClose={() => {
             dispatch(setSelectTicket(null));
           }}
-        >
+        ><div className="w-full h-10 bg-slate-400 font-bold text-xl rounded-lg justify-center flex items-center">screen</div>
           <SeatSelector />
           <div className="flex flex-col items-end space-y-4 p-4">
             <h1 className="text-xl font-semibold">

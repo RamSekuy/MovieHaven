@@ -123,6 +123,7 @@ model User {
   referalTo   String?
 
   transaction Transaction[]
+  rating      Rating[]
 }
 
 model Transaction {
@@ -147,11 +148,12 @@ enum TypeTransaction {
 }
 
 model Rating {
-  movie_id Int
-  user_id  Int
-  rate     Int
+  movieId String
+  userId  Int
+  rate    Int
 
-  Movie Movie @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+  movie Movie @relation(fields: [movieId], references: [omdbId], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([movie_id, user_id])
+  @@id([movieId, userId])
 }

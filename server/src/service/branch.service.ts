@@ -28,14 +28,12 @@ export class BranchService {
   }
   async deleteBranch(req: Request) {
     const { idBranch } = req.params;
-    console.log(req.params);
-    
+
     await prisma.branch.delete({ where: { id: Number(idBranch) } });
   }
 
   async addStudio(req: Request) {
     const { studioName, branchId } = req.body;
-    
 
     const data: Prisma.StudioCreateInput = {
       studioName,
