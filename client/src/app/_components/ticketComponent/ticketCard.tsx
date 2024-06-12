@@ -1,7 +1,6 @@
 "use client";
 import { ITicket } from "@/app/_model/ticket.model";
 import BuyTicketButton from "./buyTicketButton";
-import Link from "next/link";
 
 type Props = {
   tickets: ITicket[];

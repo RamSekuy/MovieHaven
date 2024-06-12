@@ -13,7 +13,7 @@ export class BranchService {
     const { branchId } = req.params;
 
     return await prisma.branch.findUnique({
-      include: { studios: { include: { seats: true } } },
+      include: { studios: true },
       where: { id: Number(branchId) },
     });
   }
@@ -28,6 +28,7 @@ export class BranchService {
   }
   async deleteBranch(req: Request) {
     const { idBranch } = req.params;
+    console.log(req.params);
 
     await prisma.branch.delete({ where: { id: Number(idBranch) } });
   }

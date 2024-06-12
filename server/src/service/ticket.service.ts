@@ -72,7 +72,7 @@ export class TicketService {
     if (!seats?.length) throw new Error("input valid studio");
     const data: Prisma.TicketCreateManyInput[] = seats.map((e) => ({
       price: Number(price),
-      time: new Date(time),
+      time: time,
       seatId: e.id,
       movieId: String(omdbId),
     }));

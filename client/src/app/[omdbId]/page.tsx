@@ -33,10 +33,10 @@ export default async function MovieDetailPage({ params }: Props) {
     await mainAPI.get(`/movie/${params.omdbId}`)
   ).data.data;
   return (
-    <main className="w-full flex flex-col items-center h-auto p-4 min-h-screen">
+    <main className="w-full flex flex-col items-center h-auto pt-4 min-h-screen">
       <div className="w-full max-w-4xl">
-        <div className="flex justify-center items-center flex-col md:flex-row md:space-x-6">
-          <div className="w-full md:w-1/3 flex flex-col items-center">
+        <div className="flex flex-col md:flex-row md:space-x-6">
+          <div className="w-full md:w-1/3 flex-shrink-0">
             <Image
               src={movie.poster}
               alt={movie.title}
@@ -44,13 +44,13 @@ export default async function MovieDetailPage({ params }: Props) {
               height={450}
               className="rounded-lg"
             />
-            <Link href={`/${params.omdbId}/ticket`} className="w-1/2 md:w-full">
-              <button className="flex bg-green-400 h-10 w-full rounded-lg my-5 justify-center items-center font-bold">
+            <Link href={`/${params.omdbId}/ticket`}>
+              <button className="flex bg-green-400 h-10 w-full rounded-full mt-5 justify-center items-center font-bold">
                 Buy Your Ticket
               </button>
             </Link>
           </div>
-          <div className="w-full md:w-2/3 flex flex-col space-y-4 px-3">
+          <div className="w-full md:w-2/3 flex flex-col space-y-4">
             <h1 className="text-3xl font-bold">{movie.title}</h1>
             <p>
               <strong>Description:</strong> {movie.plot}
@@ -81,9 +81,6 @@ export default async function MovieDetailPage({ params }: Props) {
               <strong>Status:</strong> {movie.status}
             </p>
           </div>
-        </div>
-        <div>
-          
         </div>
       </div>
     </main>
