@@ -35,7 +35,8 @@ class TransactionService {
   }
 
   async addTransaction(req: Request) {
-    const { type, staffId, userId, pointsUsed } = req.body;
+    const { type, staffId, pointsUsed } = req.body;
+    const userId = req.user.id;
 
     if (!Array.isArray(req.body.ticketIds)) throw new Error("Invalid tickets");
     const ticketIds = req.body.ticketIds as Ticket[];
@@ -88,13 +89,13 @@ class TransactionService {
     const { isPaid } = req.body;
 
     return await prisma.transaction.update({
-      where: { id: Number(idTransaction ) },
+      where: { id: Number(idTransaction) },
       data: { isPaid: Boolean(isPaid) },
     });
   }
 
   async deleteTransaction(req: Request) {
-    const { idTransaction  } = req.params;
+    const { idTransaction } = req.params;
     await prisma.transaction.delete({ where: { id: Number(idTransaction) } });
   }
 }

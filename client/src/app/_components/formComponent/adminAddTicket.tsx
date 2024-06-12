@@ -1,6 +1,6 @@
 "use client";
 
-import { IMovie } from "@/app/_model/movie.model";
+import { TMovie } from "@/app/_model/movie.model";
 import BackEndForm from "./backEndForm";
 import { ChangeEvent, useEffect, useState } from "react";
 import mainApi from "@/app/_lib/mainApi";
@@ -17,13 +17,12 @@ export default function adminAddTicket({
 }: Props) {
   const [input, setInput] = useState({
     price: 0,
-    date: new Date().toISOString(),
+    date: "",
     omdbId: "",
   });
-  const [movie, setMovie] = useState<IMovie[]>([]);
+  const [movie, setMovie] = useState<TMovie[]>([]);
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setInput({ ...input, [e.target.id]: e.target.value });
-    console.log(input.date);
   }
   const fetchMovie = async () => {
     const data = await mainApi.get("/movie", {
@@ -34,6 +33,15 @@ export default function adminAddTicket({
   useEffect(() => {
     fetchMovie();
   }, []);
+
+  useEffect(() => {
+    if (movie.length && !input.omdbId)
+      setInput((prev) => ({ ...prev, omdbId: movie[0].omdbId }));
+  }, [movie]);
+
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
   return (
     <BackEndForm
       action={`/ticket/${studioId}/v1`}
@@ -64,10 +72,13 @@ export default function adminAddTicket({
           id="omdbId"
           className="w-full px-4 py-2 border rounded"
           onChange={inputHandler}
+          // defaultValue={movie[1]?.omdbId}
+          value={input.omdbId}
           required
         >
+          {/* <option disabled></option> */}
           {movie.map((e, i) => (
-            <option key={i} value={e.omdbId}>
+            <option key={i} value={i}>
               {e.title}
             </option>
           ))}
@@ -80,8 +91,7 @@ export default function adminAddTicket({
           onChange={(e) => {
             setInput({
               ...input,
-              date:
-                e.target.valueAsDate?.toISOString() || new Date().toISOString(),
+              date: new Date(e.target.value).toISOString(),
             });
           }}
           required

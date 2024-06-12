@@ -18,10 +18,13 @@ export class StaffController {
   async staffLogin(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await staffService.staffLogin(req);
-      res.cookie("rauth", data, { maxAge: 3600 * 1000 }).send({
-        message: "success login Staff",
-        data,
-      });
+      res
+        .cookie("rauth", data.rauth, { maxAge: 3600 * 1000 })
+        .cookie("aauth", data.aauth, { maxAge: 60 * 20 * 1000 })
+        .send({
+          message: "success login Staff",
+          data: data.staffData,
+        });
     } catch (error) {
       next(error);
     }

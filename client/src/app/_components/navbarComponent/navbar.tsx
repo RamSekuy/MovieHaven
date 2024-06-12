@@ -13,28 +13,17 @@ export function NavbarToggler() {
 }
 
 export default function Navbar() {
-  function navbarLink(text: string, url: string) {
-    return { text, url };
-  }
-
-  const hrefList = [
-    navbarLink("Now Playing", "/nowShowing"),
-    navbarLink("Up Coming", "/upComing"),
-    navbarLink("Login", "/login"),
-    navbarLink("Register", "/register"),
-  ];
-
   return (
     <div className="w-full flex justify-between px-2 text-white h-full">
       <div className="h-full flex items-center justify-center gap-3">
         <div className="h-full relative aspect-[409/92]">
           <Link href="/">
-            <Image src="/logoMovie.png" alt="logo" fill objectFit="contain" />
+            <Image src="/logoMovie.png" alt="logo" fill />
           </Link>
         </div>
       </div>
 
-      <Humburger hrefList={hrefList} />
+      <Humburger />
     </div>
   );
 }

@@ -1,18 +1,18 @@
 export interface IUser {
-  id?: number;
-  username?: string;
-  email?: string;
+  id: number;
+  username: string;
+  email: string;
   password?: string;
-  points?: number;
+  points: number;
   pointExpire?: Date;
-  referalCode?: string;
+  referalCode: string;
   referalTo?: string;
 }
 export interface IAdmin {
-  id?: number;
-  name?: string;
-  isActive?: boolean;
-  address?: string;
-  email?: string;
+  id: number;
+  name: string;
+  isActive: boolean;
+  address: string;
+  email: string;
   password?: string;
 }

@@ -2,6 +2,7 @@
 import { ITicket } from "@/app/_model/ticket.model";
 import BuyTicketButton from "./buyTicketButton";
 
+
 type Props = {
   tickets: ITicket[];
   branch: any;

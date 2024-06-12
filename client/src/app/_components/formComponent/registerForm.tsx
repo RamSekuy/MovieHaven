@@ -10,7 +10,7 @@ const RegisterForm: React.FC = () => {
   const router = useRouter();
   const [input, setInput] = useState({});
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    console.log(input)
+    console.log(input);
     setInput({ ...input, [e.target.id]: e.target.value });
   }
 
@@ -68,7 +68,7 @@ const RegisterForm: React.FC = () => {
             </label>
             <input
               type="text"
-              id="referalCode"
+              id="referalTo"
               className="w-full px-4 py-2 border rounded mt-2"
               onChange={inputHandler}
             />

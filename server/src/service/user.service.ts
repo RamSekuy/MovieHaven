@@ -5,15 +5,23 @@ import { formatRequestBody } from "../utils/formatRequestBody";
 import { generateReferal } from "../utils/generateReferal";
 import { compare } from "bcrypt";
 import { generateToken } from "../lib/jwt";
-import { Prisma } from "@prisma/client";
+import { Prisma, Staff, User } from "@prisma/client";
 
 export class UserService {
   async register(req: Request) {
     console.log(req.body);
-    const { username, email, password } = await formatRequestBody(req, true);
+    const { username, email, password, referalTo } = await formatRequestBody(
+      req,
+      true
+    );
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() + 3);
-    const data: Prisma.UserCreateManyInput = { username, email, password };
+    const data: Prisma.UserCreateManyInput = {
+      username,
+      email,
+      password,
+      referalTo,
+    };
 
     try {
       await prisma.$transaction(async (prisma) => {
@@ -67,7 +75,13 @@ export class UserService {
     if (!(await compare(body.password, data.password)))
       throw new Error("Invalid passwod");
     const result = { id: data.id, type: "user" };
-    return generateToken(result, { expiresIn: "1h" });
+    const userData = { ...data, password: undefined };
+    const aauthToken = generateToken(userData, { expiresIn: "1h" });
+    return {
+      rauth: generateToken(result, { expiresIn: "1h" }),
+      aauthToken,
+      userData,
+    };
   }
 
   async referralUser(req: Request) {
@@ -76,20 +90,27 @@ export class UserService {
   }
 
   async validate(req: Request) {
-    let tokenData;
-    console.log(req.user, req.staff);
+    let tokenData: { [any: string]: any } | undefined;
     if (req.user != undefined) {
-      tokenData = await prisma.user.findFirst({
+      tokenData = (await prisma.user.findFirst({
         where: { id: Number(req.user.id) },
-      });
+      })) as User;
+      tokenData.type = "user";
     } else if (req.staff != undefined) {
-      tokenData = await prisma.staff.findFirst({
+      tokenData = (await prisma.staff.findFirst({
         where: { id: Number(req.staff.id) },
-      });
+      })) as Staff;
+      tokenData.type = "staff";
     }
     return tokenData == null
       ? null
-      : generateToken(tokenData, { expiresIn: "1h" });
+      : generateToken(
+          {
+            ...tokenData,
+            password: undefined,
+          },
+          { expiresIn: "1h" }
+        );
   }
 }
 

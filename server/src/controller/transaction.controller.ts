@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import transactionService from "../service/transaction.service";
+import { accessCheck } from "../utils/accessCheck";
+import { Transaction } from "@prisma/client";
 
 export class TransactionController {
   async getAllTransaction(req: Request, res: Response, next: NextFunction) {
@@ -17,16 +19,25 @@ export class TransactionController {
   async getTransactionById(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await transactionService.getTransactionById(req);
-      res.send({
-        message: "fetch transaction",
-        data,
-      });
+      !data?.userId
+        ? null
+        : !accessCheck(res, req.user.id, data.userId)
+        ? null
+        : res.send({
+            message: "fetch transaction",
+            data,
+          });
     } catch (error) {
       next(error);
     }
   }
-  async getTransactionByInvoiceNum(req: Request, res: Response, next: NextFunction) {
+  async getTransactionByInvoiceNum(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
+      console.log("auth aman");
       const data = await transactionService.getTransactionByInvoiceNum(req);
       res.send({
         message: "fetch transaction",
@@ -51,7 +62,10 @@ export class TransactionController {
 
   async updateTransaction(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await transactionService.updateTransaction(req);
+      const data = (await transactionService.updateTransaction(
+        req
+      )) as Transaction;
+      data.userId ? accessCheck(res, req.user.id, data.userId) : null;
       res.send({
         message: "transaction is paid",
         data,

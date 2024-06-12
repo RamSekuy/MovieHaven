@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { IMovie } from "../../_model/movie.model";
+import { TMovie } from "../../_model/movie.model";
 import Image from "next/image";
 interface SlidePosterProps {
-  movies: IMovie[];
+  movies: TMovie[];
   promotions: string[]; // Array untuk menyimpan URL gambar promosi
 }
 

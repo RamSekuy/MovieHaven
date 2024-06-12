@@ -3,15 +3,25 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { userDataAction } from "@/app/_lib/redux/slices/userData.slice";
 
-export default function Humburger({
-  hrefList = [],
-}: {
-  hrefList: { text: string; url: string }[];
-}) {
+export default function Humburger() {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
+  const userData = useAppSelector((s) => s.userData);
   const [burger, setBurger] = useState(false);
+  function navbarLink(text: string, url: string) {
+    return { text, url };
+  }
+
+  const hrefList = [
+    navbarLink("Now Playing", "/nowShowing"),
+    navbarLink("Up Coming", "/upComing"),
+  ];
+  const optionalHref = !userData?.id
+    ? [navbarLink("Login", "/login"), navbarLink("Register", "/register")]
+    : [];
 
   const handleClickOutside = (event: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -25,6 +35,7 @@ export default function Humburger({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const dispatch = useAppDispatch();
 
   return (
     <div ref={menuRef} className={`flex flex-col items-end h-full w-max`}>
@@ -58,6 +69,33 @@ export default function Humburger({
             </Link>
           </li>
         ))}
+        {optionalHref.map((e, i) => (
+          <li className="h-full w-full text-white font-semibold py-2" key={i}>
+            <Link
+              className={`w-full h-full text-end px-2 ${
+                pathname == e.url ? "text-gray-600 bg-white rounded-lg pt" : ""
+              } hover:text-gray-600 hover:bg-white flex justify-center items-center rounded-lg`}
+              href={e.url}
+              onClick={() => setBurger(false)}
+            >
+              <p className="w-full text-nowrap text-center">{e.text}</p>
+            </Link>
+          </li>
+        ))}
+        {userData?.id && (
+          <li>
+            <button
+              onClick={() => {
+                if (confirm("sure for logout?")) {
+                  dispatch(userDataAction.logout(null));
+                  setBurger(false);
+                }
+              }}
+            >
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </div>
   );

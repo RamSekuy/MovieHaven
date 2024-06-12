@@ -47,7 +47,13 @@ export class StaffSevice {
       throw new Error("Invalid data login");
     }
     const result = { id: data.id, type: "admin" };
-    return generateToken(result, { expiresIn: "1h" });
+    const result2 = { ...data, password: undefined };
+    const aauth = generateToken(result2, { expiresIn: "1h" });
+    return {
+      rauth: generateToken(result, { expiresIn: "1h" }),
+      aauth,
+      staffData: result2,
+    };
   }
 }
 

@@ -3,6 +3,10 @@ import Link from "next/link";
 import BackEndForm from "./backEndForm";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/app/_lib/redux/hooks";
+import { userDataAction } from "@/app/_lib/redux/slices/userData.slice";
+import { keepLogin } from "@/app/_middleware/auth.middleware";
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -10,6 +14,7 @@ const LoginForm: React.FC = () => {
   function inputHandler(e: ChangeEvent<HTMLInputElement>) {
     setInput({ ...input, [e.target.id]: e.target.value });
   }
+  const dispatch = useAppDispatch();
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
@@ -19,6 +24,7 @@ const LoginForm: React.FC = () => {
           action="/user/v2"
           method="post"
           onSuccess={(response) => {
+            dispatch(userDataAction.loginUser(response.data.data));
             router.push("/");
           }}
           onFail={(err) => {

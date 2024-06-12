@@ -32,7 +32,6 @@ export class TicketService {
           take: 1,
           include: {
             ticket: {
-              select: { time: true, id: true },
               distinct: ["time"],
               where: {
                 movieId: String(omdbId),
@@ -44,7 +43,7 @@ export class TicketService {
       },
       where: { branch: { location: { contains: time ? String(branch) : "" } } },
     });
-
+    console.log(data[0].seats[0].ticket);
     return data;
   }
 

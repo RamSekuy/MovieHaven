@@ -14,6 +14,7 @@ export type TRoute = {
   ticket: "/ticket" | `/ticket/${string}`;
   branch: "/branch" | `/branch/${string}`;
   transaction: "/transaction" | `/transaction/${string}`;
+  rating: "/rating" | `/rating/${string}`;
 };
 
 interface IMainApi extends AxiosInstance {
@@ -48,7 +49,8 @@ class MainAPI {
     this.api_url = api_url;
   }
   get mainAPI() {
-    const token = getCookie("access_token") || "0";
+    const token = getCookie("aauth");
+
     return axios.create({
       baseURL: this.api_url,
       withCredentials: true,

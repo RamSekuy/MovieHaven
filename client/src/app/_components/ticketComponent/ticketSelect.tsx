@@ -50,9 +50,12 @@ export default function TicketSelect({ studios }: Props) {
         <Modal
           isOpen={selectTicket.studioId && selectTicket.time ? true : false}
           onClose={() => {
-            dispatch(setSelectTicket(null));
+            dispatch(setSelectTicket());
           }}
         >
+          <div className="w-full h-10 bg-slate-400 font-bold text-xl rounded-lg justify-center flex items-center">
+            screen
+          </div>
           <SeatSelector />
           <div className="flex flex-col items-end space-y-4 p-4">
             <h1 className="text-xl font-semibold">
@@ -69,16 +72,15 @@ export default function TicketSelect({ studios }: Props) {
               method="post"
               data={{
                 type: "online",
-                userId: 1,
                 pointsUsed: input.usePoint,
                 ticketIds: selectTicket.tickets,
               }}
               onSuccess={(res) => {
                 router.push(`/checkOut/${res.data.data.invoiceNum}`);
-                dispatch(setSelectTicket(undefined));
+                dispatch(setSelectTicket());
               }}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex justify-end space-x-2">
                 <label htmlFor="usePoint">usePoint</label>
                 <input
                   id="usePoint"
@@ -87,14 +89,16 @@ export default function TicketSelect({ studios }: Props) {
                   onChange={inputHandler}
                 />
               </div>
-              <input
-                onClick={(e) => {
-                  selectTicket.tickets.length ? null : e.preventDefault();
-                }}
-                type="submit"
-                value="Checkout"
-                className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-200"
-              />
+
+                <input
+                  onClick={(e) => {
+                    selectTicket.tickets.length ? null : e.preventDefault();
+                  }}
+                  type="submit"
+                  value="Checkout"
+                  className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-200"
+                />
+              
             </BackEndForm>
           </div>
         </Modal>

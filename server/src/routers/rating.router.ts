@@ -1,6 +1,7 @@
 /** @format */
 import RatingController from "../controller/rating.controller";
 import { EntityRouter } from "./entity.router";
+import { tokenAuth } from "../middleware/tokenAuth";
 
 class RatingRouter extends EntityRouter {
   constructor() {
@@ -9,10 +10,10 @@ class RatingRouter extends EntityRouter {
   }
   private initializedRoutes() {
     this.router.get("/", RatingController.getAllRating.bind(RatingController));
-    this.router.get("/movie/:movieId", RatingController.getRatingByMovie.bind(RatingController));
+    this.router.get("/movie/:movie_Id", RatingController.getRatingByMovie.bind(RatingController));
     this.router.get("/user/:userId", RatingController.getRatingByUser.bind(RatingController));
-    this.router.post("/rt2", RatingController.addRating.bind(RatingController));
-    this.router.delete("/movie/:movieId", RatingController.deleteRatingByMovie.bind(RatingController));
+    this.router.post("/rt2",tokenAuth,RatingController.addRating.bind(RatingController));
+    this.router.delete("/movie/:movie_Id", RatingController.deleteRatingByMovie.bind(RatingController));
 
   }
 }

@@ -13,7 +13,10 @@ export const generateMetadata = async ({
     omdbId: string;
   };
 }): Promise<Metadata> => {
-  const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
+  const result = await mainAPI("/movie/" + params.omdbId)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+
   result == null ? redirect("/movieNotFound") : null;
   return {
     title: result.title,
@@ -27,17 +30,21 @@ type Props = {
 };
 
 const TicketPage = async ({ params }: Props) => {
-  const response = await mainAPI.get(`/ticket/movie/${params.omdbId}`);
-  const tickets: TBranchTicket[] = response.data.data;
+  const tickets: TBranchTicket[] = await mainAPI
+    .get(`/ticket/movie/${params.omdbId}`)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Movie Ticket Booking</h1>
-      {tickets.length ? (
-        <TicketSelect buttonType="userBuy" studios={tickets}></TicketSelect>
-      ) : (
-        <h1>No Ticket Available</h1>
-      )}
+    <div className="min-h-screen">
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Movie Ticket Booking</h1>
+        {tickets.length ? (
+          <TicketSelect studios={tickets}></TicketSelect>
+        ) : (
+          <h1>No Ticket Available</h1>
+        )}
+      </div>
     </div>
   );
 };

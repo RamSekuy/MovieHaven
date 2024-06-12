@@ -1,37 +1,45 @@
-// import SlidePoster from "./_components/sleedComponent/sleed";
+import { TMovie } from "./_model/movie.model";
+import SlidePoster from "./_components/sleedComponent/sleed";
 import NowShowingPage from "./_components/listFilmComponent/nowShowing";
 import ComingSoonPage from "./_components/listFilmComponent/upComing";
-import ListMovie from "./_components/listFilmComponent/listMovie";
+import mainAPI from "./_lib/mainApi";
 
-const HomePage = () => {
-  // const promotionImages = [
-  //   "https://via.placeholder.com/800x400?text=Promo+1",
-  //   "https://via.placeholder.com/800x400?text=Promo+2",
-  // ]; // URL gambar promosi
+const HomePage = async () => {
+  const allMovie: TMovie[] = await mainAPI
+    .get("/movie")
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+
+  const currentlyPlayingMovies = allMovie.filter(
+    (e) => e.status == "CurrentlyPlaying"
+  );
+
+  const comingSoonMovies = allMovie.filter((e) => e.status == "CommingSoon");
+
+  const promotionImages = [
+    "https://via.placeholder.com/800x400?text=Promo+1",
+    "https://via.placeholder.com/800x400?text=Promo+2",
+  ]; // URL gambar promosi
 
   return (
     <div className="bg-gray-100 min-h-screen">
       <main className="bg-gray-100 min-h-screen">
         <div className="container hover:shadow-[0_35px_60px_-15px_rgba(15,23,42)] transition-shadow duration-300 mx-auto flex justify-center flex-col max-w-[850px] p-4">
           {/* Slide Poster Section for Currently Playing Movies */}
-          {/* {currentlyPlayingMovies.length > 0 && (
+          {currentlyPlayingMovies.length > 0 && (
             <div className="mb-8">
               <SlidePoster
                 movies={currentlyPlayingMovies}
                 promotions={promotionImages}
               />
             </div>
-          )} */}
+          )}
 
           {/* Now Showing Section */}
-          <ListMovie movieStatus="Now Showing">
-            <NowShowingPage />
-          </ListMovie>
+          <NowShowingPage nowShowingMovies={currentlyPlayingMovies} />
 
           {/* Coming Soon Section */}
-          <ListMovie movieStatus="Coming Soon">
-            <ComingSoonPage />
-          </ListMovie>
+          <ComingSoonPage comingSoonMovies={comingSoonMovies} />
         </div>
       </main>
     </div>

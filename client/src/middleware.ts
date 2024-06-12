@@ -42,9 +42,9 @@ export async function middleware(request: NextRequest) {
   }
 
   //Route Protection
-  if (userType != "admin" && adminOnly.find((e) => e == pathname)) {
+  if (userType != "admin" && pathname.startsWith("/admin/")) {
     return NextResponse.redirect(new URL("/admin-login", request.url));
-  } else if (userType != "user" && userOnly.find((e) => e == pathname)) {
+  } else if (userType != "user" && pathname.startsWith("/chekOut/INV")) {
     return NextResponse.redirect(new URL("/login", request.url));
   } else if (userType != "guest" && guestOnly.find((e) => e == pathname)) {
     return NextResponse.redirect(new URL("/", request.url));

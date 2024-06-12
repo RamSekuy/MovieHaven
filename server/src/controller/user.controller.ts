@@ -19,9 +19,13 @@ export class TicketController {
     try {
       const data = await userService.login(req);
 
-      res.cookie("rauth", data, { maxAge: 3600 * 1000 }).send({
-        message: "success login",
-      });
+      res
+        .cookie("rauth", data.rauth, { maxAge: 3600 * 1000 })
+        .cookie("aauth", data.aauthToken, { maxAge: 60 * 20 * 1000 })
+        .send({
+          message: "success login",
+          data: data.userData,
+        });
     } catch (error) {
       next(error);
     }

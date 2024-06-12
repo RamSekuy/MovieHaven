@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/_lib/redux/hooks";
 import { setSelectTicket } from "@/app/_lib/redux/slices/selectTicket.slice";
 
-const p = [
+const temP = [
   {
     id: 1,
     movieId: "tt6587046",
@@ -71,7 +71,7 @@ const p = [
 
 const SeatSelector = () => {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
-  const [seats, setSeats] = useState<typeof p>([]);
+  const [seats, setSeats] = useState<typeof temP>([]);
   const selectTicket = useAppSelector((state) => state.selectTicket);
   const { studioId, time } = selectTicket;
   const dispatch = useAppDispatch();
@@ -148,7 +148,7 @@ export default SeatSelector;
           </button> */
 }
 
-function getUniqueRows(data: typeof p) {
+function getUniqueRows(data: typeof temP) {
   const uniqueRows = new Set();
 
   data.forEach((item) => {

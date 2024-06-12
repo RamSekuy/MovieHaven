@@ -5,24 +5,27 @@ import Link from "next/link";
 import BackEndForm from "./backEndForm";
 import { useRouter } from "next/navigation";
 import { ChangeEvent } from "react";
+import { useAppDispatch } from "@/app/_lib/redux/hooks";
+import { userDataAction } from "@/app/_lib/redux/slices/userData.slice";
 
 const AdminLoginForm: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [input, setInput] = useState({});
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setInput({ ...input, [e.target.id]: e.target.value });
   }
-
+  const dispatch = useAppDispatch();
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6">Login</h2>
+        <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
 
         <BackEndForm
           action="/staff/s2"
           data={input}
           method="post"
           onSuccess={(res) => {
+            dispatch(userDataAction.loginAdmin(res.data.data));
             router.push("/admin/movie-list");
           }}
         >
@@ -59,10 +62,10 @@ const AdminLoginForm: React.FC = () => {
 
         <div className="mt-4 text-center">
           <p>
-            want to add staff?{" "}
+            Want to add staff?{" "}
             <Link href="/admin-register" legacyBehavior>
               <a className="text-blue-500">Register</a>
-            </Link>800
+            </Link>
           </p>
         </div>
       </div>

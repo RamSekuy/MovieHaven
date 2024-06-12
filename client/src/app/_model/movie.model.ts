@@ -1,4 +1,4 @@
-export interface IMovie {
+export type TMovie ={
   id: number;
   status: "CurrentlyPlaying" | "OutOfTheather" | "CommingSoon";
   omdbId: string;

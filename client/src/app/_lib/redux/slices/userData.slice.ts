@@ -2,25 +2,33 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { IUser, IAdmin } from "@/app/_model/user.model";
+import { deleteCookie } from "cookies-next";
 
-const initialState: IUser | IAdmin = {};
+type TState = IUser | null | IAdmin;
+
+const initialState: TState = {} as TState;
 
 const userDataSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
-    setUserData: (
-      state,
-      action: { payload: IUser | IAdmin | undefined; type: string }
-    ) => {
-      if (!action.payload) {
-        state = {};
-      } else {
-        state = { ...state, ...action.payload };
-      }
+    loginUser: (state, action: { payload: IUser; type: string }) => {
+      state = action.payload;
+      return state;
+    },
+    loginAdmin: (state: TState, action: { payload: IAdmin; type: string }) => {
+      state = action.payload;
+      return state;
+    },
+    logout: (state, action: { payload: any; type: string }) => {
+      state = initialState;
+      deleteCookie("rauth");
+      deleteCookie("aauth");
+
       return state;
     },
   },
 });
 
 export default userDataSlice;
+export const userDataAction = userDataSlice.actions;

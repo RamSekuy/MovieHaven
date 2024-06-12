@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
-export type IUserCookie = Omit<Prisma.UserFieldRefs, "password">;
+export type IUserCookie = Omit<User, "password">;
 export type IStaffCookie = Omit<Prisma.StaffFieldRefs, "password">;

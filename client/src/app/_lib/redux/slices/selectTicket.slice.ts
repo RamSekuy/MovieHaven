@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { ITicket } from "@/app/_model/ticket.model";
+import { ISeat } from "@/app/_model/seat.model";
 
 interface ITicketSeat extends ITicket {
   seat: ISeat;
@@ -14,8 +15,8 @@ interface IState {
 }
 
 const initialState: IState = {
-  studioId: 0,
-  time: new Date(),
+  studioId: undefined,
+  time: undefined,
   tickets: [],
 };
 
@@ -23,13 +24,17 @@ export const selectTicket = createSlice({
   name: "selectTicket",
   initialState,
   reducers: {
-    setSelectTicket: (state, action: IState | undefined) => {
-      if (!action.payload) {
-        state = { tickets: [] };
-      } else {
+    setSelectTicket: (
+      state,
+      action: { payload: IState | undefined; type: string }
+    ) => {
+      if (action.payload) {
         state = { ...state, ...action.payload };
+        return state;
+      } else {
+        state = initialState;
+        return state;
       }
-      return state;
     },
   },
 });

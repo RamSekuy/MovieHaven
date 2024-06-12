@@ -20,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen`}>
-        <NavbarToggler />
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <NavbarToggler />
+          {children}
+        </StoreProvider>
         <Footer />
       </body>
     </html>
