@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { TMovie } from "@/app/_model/movie.model";
-import mainAPI from "@/app/_lib/mainApi";
+import ssrMainApi from "@/app/_lib/axios/ssrMainApi";
 
 const ComingSoonPage = async ({
   comingSoonMovies,
@@ -9,8 +9,8 @@ const ComingSoonPage = async ({
 }) => {
   comingSoonMovies =
     comingSoonMovies ||
-    (await mainAPI.get("/movie", { params: { status: "CommingSoon" } })).data
-      .data;
+    (await ssrMainApi().get("/movie", { params: { status: "CommingSoon" } }))
+      .data.data;
   return (
     <div className="bg-gray-100 min-h-screen">
       <main className="bg-gray-100 min-h-screen">

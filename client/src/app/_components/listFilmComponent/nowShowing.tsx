@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { TMovie } from "@/app/_model/movie.model";
-import mainApi from "@/app/_lib/mainApi";
 import Link from "next/link";
+import ssrMainApi from "@/app/_lib/axios/ssrMainApi";
 
 const NowShowingPage = async ({
   nowShowingMovies,
@@ -11,8 +11,11 @@ const NowShowingPage = async ({
 }) => {
   nowShowingMovies =
     nowShowingMovies ||
-    (await mainApi.get("/movie", { params: { status: "CurrentlyPlaying" } }))
-      .data.data;
+    (
+      await ssrMainApi().get("/movie", {
+        params: { status: "CurrentlyPlaying" },
+      })
+    ).data.data;
   return (
     <div className="bg-white min-h-screen">
       <main className="bg-gray-100 min-h-screen">

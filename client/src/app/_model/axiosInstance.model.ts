@@ -1,6 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getCookie } from "cookies-next";
-import { MAIN_API } from "../_config/config";
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export type TMainApiRespone = {
   message: string;
@@ -17,7 +15,7 @@ export type TRoute = {
   rating: "/rating" | `/rating/${string}`;
 };
 
-interface IMainApi extends AxiosInstance {
+export interface IMainApi extends AxiosInstance {
   get<T = TMainApiRespone, R = AxiosResponse<T>, D = any>(
     url: TRoute[keyof TRoute],
     config?: AxiosRequestConfig<D>
@@ -42,23 +40,3 @@ interface IMainApi extends AxiosInstance {
     config?: AxiosRequestConfig<D>
   ): Promise<R>;
 }
-
-class MainAPI {
-  private api_url;
-  constructor(api_url: `http://${string}`) {
-    this.api_url = api_url;
-  }
-  get mainAPI() {
-    const token = getCookie("aauth");
-
-    return axios.create({
-      baseURL: this.api_url,
-      withCredentials: true,
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }) as IMainApi;
-  }
-}
-
-export default new MainAPI(MAIN_API).mainAPI;

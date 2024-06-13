@@ -1,6 +1,6 @@
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
+import { TRoute } from "@/app/_model/axiosInstance.model";
 import React, { FormEvent, ReactNode } from "react";
-import mainAPI from "@/app/_lib/mainApi";
-import { TRoute } from "@/app/_lib/mainApi";
 
 interface BackEndFormProps {
   action: TRoute[keyof TRoute];
@@ -25,7 +25,7 @@ const BackEndForm: React.FC<BackEndFormProps> = ({
     e.preventDefault();
     try {
       console.log(data);
-      const res = await mainAPI({
+      const res = await csrMainApi()({
         method,
         url: action,
         data,

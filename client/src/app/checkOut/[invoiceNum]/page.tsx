@@ -1,10 +1,7 @@
-import mainAPI from "@/app/_lib/mainApi";
 import ChangeStatus from "@/app/_components/transactionComponent/changeStatus";
 import { ITransaction } from "@/app/_model/transaction.model";
-import ErrorPage from "@/app/_components/errorPage/errorPage";
-import { isNumberObject } from "util/types";
-import { AxiosError } from "axios";
-import SSRApi from "@/app/_lib/testApi";
+import ssrMainApi from "@/app/_lib/axios/ssrMainApi";
+
 type Props = {
   params: {
     invoiceNum: string;
@@ -13,19 +10,15 @@ type Props = {
 
 export default async function checkOutPage({ params }: Props) {
   const fetchTrans = async () => {
-    return await SSRApi()
+    return await ssrMainApi()
       .get(`/transaction/invoice/${params.invoiceNum}`)
       .then((res) => res.data.data as ITransaction)
       .catch((err: any) => {
-        if (err instanceof AxiosError) console.log(err.response?.data);
-        return err.response.status as number;
+        throw new Error("");
       });
   };
   const result = await fetchTrans();
-  console.log(result, "ini result");
 
-  if (isNumberObject(result)) return <ErrorPage code={result} />;
-  // else
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="p-4 flex justify-center bg-gray-50">

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import mainAPI from "@/app/_lib/mainApi";
 import { jwtDecode } from "jwt-decode";
-import { MAIN_API } from "@/app/_config/config";
+import ssrMainApi from "./app/_lib/axios/ssrMainApi";
 
 const adminOnly = ["/admin/:path*"];
 const userOnly = [""];
@@ -11,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("rauth")?.value || ".";
   const response = NextResponse.next();
-  const access_token = await mainAPI
+  const access_token = await ssrMainApi()
     .get("/user/validate", {
       withCredentials: true,
       headers: {
@@ -27,8 +26,6 @@ export async function middleware(request: NextRequest) {
     .catch((err) => {
       return false;
     });
-
-  // const is_verified = res.is_verified;
 
   let userType = "guest";
   if (access_token) {

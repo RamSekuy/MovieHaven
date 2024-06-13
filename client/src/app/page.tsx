@@ -2,13 +2,13 @@ import { TMovie } from "./_model/movie.model";
 import SlidePoster from "./_components/sleedComponent/sleed";
 import NowShowingPage from "./_components/listFilmComponent/nowShowing";
 import ComingSoonPage from "./_components/listFilmComponent/upComing";
-import mainAPI from "./_lib/mainApi";
+import csrMainApi from "./_lib/axios/csrMainApi";
 
 const HomePage = async () => {
-  const allMovie: TMovie[] = await mainAPI
+  const allMovie: TMovie[] = await csrMainApi()
     .get("/movie")
     .then((res) => res.data.data)
-    .catch((err) => console.log(err));
+    .catch((err) => []);
 
   const currentlyPlayingMovies = allMovie.filter(
     (e) => e.status == "CurrentlyPlaying"
