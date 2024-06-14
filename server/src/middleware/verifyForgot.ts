@@ -1,24 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import { SECRET_KEY } from "../config/config";
 import { verify } from "jsonwebtoken";
+import { FORGET_PASSWORD } from "../config/config";
 
-export function tokenAuth(req: Request, res: Response, next: NextFunction) {
+export function verifyForgot(req: Request, res: Response, next: NextFunction) {
   const token = req.headers["authorization"];
-
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
-
   verify(
     token.split(" ")[1],
-    SECRET_KEY,
+    FORGET_PASSWORD,
     (err: Error | null, decodedToken: any) => {
       if (err) {
         return res.status(403).json({ message: "Invalid token" });
       }
-      if (decodedToken.type == "user") req.user = decodedToken;
-      if (decodedToken.type == "admin") req.staff = decodedToken;
-      next();
+      req.user = decodedToken;
     }
   );
+  next();
 }

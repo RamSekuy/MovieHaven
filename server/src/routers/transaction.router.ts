@@ -25,6 +25,12 @@ class transactionRouter extends EntityRouter {
       tokenAuth,
       transactionController.getTransactionById.bind(transactionController)
     );
+    this.router.get(
+      "/statis/ly",
+      transactionController.getTransactionsByMonthAndYear.bind(
+        transactionController
+      )
+    );
     this.router.patch(
       "/invoice/:idTransaction",
       tokenAuth,

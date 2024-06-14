@@ -8,7 +8,7 @@ export class MovieService {
     const { title, status } = req.query as { [x: string]: string | undefined };
     const condition: Prisma.MovieFindManyArgs = {
       where: {
-        ...(title ? { title } : {}),
+        ...(title ? { title: { contains: title } } : {}),
         ...(status
           ? { status: status as Prisma.EnumMovieStatusFilter<"Movie"> }
           : {}),

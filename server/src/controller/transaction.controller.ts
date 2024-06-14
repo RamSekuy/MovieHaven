@@ -37,10 +37,25 @@ export class TransactionController {
     next: NextFunction
   ) {
     try {
-      console.log("auth aman");
       const data = await transactionService.getTransactionByInvoiceNum(req);
       res.send({
         message: "fetch transaction",
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getTransactionsByMonthAndYear(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const data = await transactionService.getTransactionsByMonthAndYear(req);
+      res.send({
+        message: "get total transaction by month success",
         data,
       });
     } catch (error) {

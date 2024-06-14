@@ -54,6 +54,20 @@ export class TicketController {
       next(error);
     }
   }
+
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    await userService.emailVerify(req);
+    res.send({ message: "success verify" });
+  }
+
+  async forgot(req: Request, res: Response, next: NextFunction) {
+    await userService.forgot(req);
+    res.send({ message: "success forgot password" });
+  }
+  async recoveryPassword(req: Request, res: Response, next: NextFunction) {
+    await userService.recoveryPassword(req);
+    res.send({ message: "success recovery password" });
+  }
 }
 
 export default new TicketController();

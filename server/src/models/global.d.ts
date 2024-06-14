@@ -1,10 +1,10 @@
-import { IStaffCookie, IUserCookie } from "./cookie.model";
+import { Staff, User } from "@prisma/client";
 
 declare global {
   namespace Express {
     interface Request {
-      user: IUserCookie;
-      staff: IStaffCookie;
+      user: User;
+      staff: Staff;
     }
   }
 }

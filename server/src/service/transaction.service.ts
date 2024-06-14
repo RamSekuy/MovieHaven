@@ -3,7 +3,7 @@ import { Request } from "express";
 import { prisma } from "../lib/prisma";
 import { Prisma, Ticket, Transaction, TypeTransaction } from "@prisma/client";
 import { userExpire } from "../utils/userExpire";
-import { generateReferal } from "../utils/generateReferal";
+import { TransactionCountStats } from "../models/transactionStats";
 
 class TransactionService {
   async getAllTransaction(req: Request) {
@@ -32,6 +32,24 @@ class TransactionService {
     return await prisma.transaction.findUnique({
       where: { invoiceNum: invoiceNum },
     });
+  }
+
+  async getTransactionsByMonthAndYear(req: Request) {
+    const { month, year } = req.query;
+
+    if (!month || !year) {
+      throw new Error("Month and year are required");
+    }
+    const transactions = await prisma.$queryRaw<TransactionCountStats[]>`
+    SELECT ticket.movieId, movie.title, COUNT(ticket.id) AS sold, sum(ticket.price) as total
+    FROM Transaction
+    INNER JOIN ticket ON ticket.transactionId = transaction.id
+    INNER JOIN movie ON ticket.movieId = movie.omdbId
+    WHERE MONTH(transaction.date) = ${month} AND YEAR(transaction.date) = ${year}
+    GROUP BY ticket.movieId
+    order by sold desc;
+    `;
+    return transactions.map((t) => ({ ...t, sold: Number(t.sold) }));
   }
 
   async addTransaction(req: Request) {

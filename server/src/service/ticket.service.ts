@@ -25,7 +25,7 @@ export class TicketService {
     const { time, branch } = req.query;
     // Fetch the data from the database
     const data = await prisma.studio.findMany({
-      distinct: ["branchId"],
+      distinct: ["id"],
       include: {
         branch: true,
         seats: {
@@ -43,7 +43,6 @@ export class TicketService {
       },
       where: { branch: { location: { contains: time ? String(branch) : "" } } },
     });
-    console.log(data[0].seats[0].ticket);
     return data;
   }
 

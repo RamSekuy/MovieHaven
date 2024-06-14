@@ -119,8 +119,9 @@ model User {
   password    String
   points      Int       @default(0)
   pointExpire DateTime?
-  referalCode String?
+  referalCode String?   @unique
   referalTo   String?
+  isVerify    Boolean   @default(false)
 
   transaction Transaction[]
   rating      Rating[]
