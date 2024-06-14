@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <div className="w-full flex justify-between px-2 text-white h-full">
       <div className="h-full flex items-center justify-center gap-3">
-        <div className="h-full relative aspect-[409/92]">
+        <div className="h-full relative aspect-[385/73]">
           <Link href="/">
             <Image src="/logoMovie.png" alt="logo" fill />
           </Link>

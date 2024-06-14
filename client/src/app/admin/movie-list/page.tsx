@@ -1,39 +1,40 @@
 "use client";
 
-import {  useEffect, useState } from "react";
-import { IMovie } from "@/app/_model/movie.model";
-import mainAPI from "@/app/_lib/mainApi";
+import { useEffect, useState } from "react";
 import BackEndForm from "@/app/_components/formComponent/backEndForm";
-import MainMovieCard from "@/app/_components/cardComponents/mainMovieCard";
+import MainMovieCard from "@/app/_components/cardComponent/mainMovieCard";
+import { TMovie } from "@/app/_model/movie.model";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
+// import { debounce } from "@/app/_utils/debounce";
 
 export default function MovieList() {
   const [title, setTitle] = useState("");
-  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [movies, setMovies] = useState<TMovie[]>([]);
   const [status, setStatus] = useState("");
   const [selectedMovie, setSelectedMovie] = useState<{
-    movie: IMovie;
+    movie: TMovie;
     index: number;
   } | null>(null);
 
   async function fetchMovies() {
     try {
-      const response = await mainAPI.get("/movie");
-      const sortedMovies = response.data.data.sort(
-        (a: { status: string }, b: { status: string }) => {
-          if (a.status === "CurrentlyPlaying") return -1;
-          if (b.status === "CurrentlyPlaying") return 1;
-          return 0;
-        }
-      );
-      setMovies(sortedMovies);
+      const response = await csrMainApi().get("/movie", {
+        params: { ...(title.length ? { title } : {}) },
+      });
+      setMovies(response.data.data);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
   }
-
   useEffect(() => {
     fetchMovies();
   }, []);
+
+  const [debonce, setDebonce] = useState<NodeJS.Timeout>();
+  useEffect(() => {
+    clearTimeout(debonce);
+    setDebonce(setTimeout(fetchMovies, 500));
+  }, [title]);
 
   return (
     <main className="w-full justify-center items-center min-h-screen py-4">
@@ -116,7 +117,7 @@ export default function MovieList() {
                   onClick={async (e) => {
                     e.preventDefault();
                     try {
-                      await mainAPI.delete(
+                      await csrMainApi().delete(
                         `/movie/${selectedMovie.movie.omdbId}`
                       );
                       setMovies(

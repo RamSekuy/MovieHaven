@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import mainAPI from "@/app/_lib/mainApi";
 import { ChangeEvent } from "react";
 import dynamic from "next/dynamic";
 import BackEndForm from "@/app/_components/formComponent/backEndForm";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
+import { useInput } from "@/app/_utils/inputHandlerState";
 
 interface IStuido {
   id: number;
@@ -28,21 +29,16 @@ export default function Page({ params }: Props) {
   const [studios, setStudios] = useState<IStuido[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedStudio, setSelectedStudio] = useState<IStuido | null>(null);
-  const [input, setInput] = useState({});
-  function inputHandler(
-    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-  ) {
-    setInput({ ...input, [e.target.id]: e.target.value });
-  }
+  const { input, setInput, inputHandler } = useInput();
 
   const fetchStudios = async () => {
-    const result = await mainAPI.get(`/branch/${params.branchId}`);
+    const result = await csrMainApi().get(`/branch/${params.branchId}`);
     setStudios(result.data.data.studios);
   };
 
   useEffect(() => {
     fetchStudios();
-  }, []);
+  });
 
   return (
     <div className="container mx-auto flex justify-center flex-col max-w-[850px] py-5">
@@ -91,6 +87,7 @@ export default function Page({ params }: Props) {
           onSuccess={(e) => {
             const data = e.data.data;
             setStudios(studios.filter((e) => e.id !== data.id));
+            alert("success delete");
             setSelectedStudio(null);
           }}
         />

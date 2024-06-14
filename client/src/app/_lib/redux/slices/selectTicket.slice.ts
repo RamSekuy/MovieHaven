@@ -1,17 +1,12 @@
 /** @format */
 
 import { createSlice } from "@reduxjs/toolkit";
-import { ITicket } from "@/app/_model/ticket.model";
-import { ISeat } from "@/app/_model/seat.model";
-
-interface ITicketSeat extends ITicket {
-  seat: ISeat;
-}
+import { ITicketWithSeat } from "@/app/_model/ticketWithSeat.model";
 
 interface IState {
   studioId?: number;
   time?: Date;
-  tickets: ITicketSeat[];
+  tickets: ITicketWithSeat[];
 }
 
 const initialState: IState = {
@@ -40,4 +35,4 @@ export const selectTicket = createSlice({
 });
 
 export const { setSelectTicket } = selectTicket.actions;
-export default selectTicket.reducer;
+export default selectTicket;

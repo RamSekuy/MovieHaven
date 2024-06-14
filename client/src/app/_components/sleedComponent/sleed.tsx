@@ -1,23 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TMovie } from "../../_model/movie.model";
 import Image from "next/image";
-interface SlidePosterProps {
-  movies: TMovie[];
-  promotions: string[]; // Array untuk menyimpan URL gambar promosi
-}
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
 
-const SlidePoster: React.FC<SlidePosterProps> = ({ movies, promotions }) => {
+const SlidePoster = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const items = [
-    ...movies,
-    ...promotions.map((url, index) => ({
-      id: `promo-${index}`,
-      poster: url,
-      title: "Promotion",
-    })),
-  ];
+  const [items, setItems] = useState<TMovie[]>([]);
+  const fetching = async () => {
+    setItems(
+      (
+        await csrMainApi().get("/movie", {
+          params: { status: "CurrentlyPlaying" },
+        })
+      ).data.data
+    );
+  };
+  useEffect(() => {
+    fetching();
+  }, []);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>

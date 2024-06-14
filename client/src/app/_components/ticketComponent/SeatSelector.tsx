@@ -1,92 +1,23 @@
-import mainAPI from "@/app/_lib/mainApi";
 import { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/_lib/redux/hooks";
 import { setSelectTicket } from "@/app/_lib/redux/slices/selectTicket.slice";
-
-const temP = [
-  {
-    id: 1,
-    movieId: "tt6587046",
-    seatId: 1,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 1, studioId: 1, row: "A", number: 1 },
-    transactionId: null,
-  },
-  {
-    id: 2,
-    movieId: "tt6587046",
-    seatId: 2,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 2, studioId: 1, row: "A", number: 2 },
-    transactionId: null,
-  },
-  {
-    id: 3,
-    movieId: "tt6587046",
-    seatId: 3,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 3, studioId: 1, row: "A", number: 3 },
-    transactionId: null,
-  },
-  {
-    id: 4,
-    movieId: "tt6587046",
-    seatId: 4,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 4, studioId: 1, row: "A", number: 4 },
-    transactionId: null,
-  },
-  {
-    id: 5,
-    movieId: "tt6587046",
-    seatId: 5,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 5, studioId: 1, row: "A", number: 5 },
-    transactionId: null,
-  },
-  {
-    id: 6,
-    movieId: "tt6587046",
-    seatId: 6,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 6, studioId: 1, row: "A", number: 6 },
-    transactionId: null,
-  },
-  {
-    id: 7,
-    movieId: "tt6587046",
-    seatId: 7,
-    time: "2024-06-06T07:00:00.000Z",
-    price: 10000,
-    seat: { id: 7, studioId: 1, row: "A", number: 7 },
-    transactionId: null,
-  },
-];
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
+import { ITicketWithSeat } from "@/app/_model/ticketWithSeat.model";
 
 const SeatSelector = () => {
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
-  const [seats, setSeats] = useState<typeof temP>([]);
+  const [seats, setSeats] = useState<ITicketWithSeat[]>([]);
   const selectTicket = useAppSelector((state) => state.selectTicket);
   const { studioId, time } = selectTicket;
   const dispatch = useAppDispatch();
-  const ticketPrice = 25000; // Harga tiket per seat
   const fetchSeats = async () => {
-    const res = await mainAPI.get(`/ticket/${studioId}`, { params: { time } });
+    const res = await csrMainApi().get(`/ticket/${studioId}`, {
+      params: { time },
+    });
     setSeats(res.data.data);
   };
   useEffect(() => {
     fetchSeats();
   }, [studioId, time]);
-
-  useEffect(() => {
-    const total = selectedSeats.length * ticketPrice;
-  }, [selectedSeats]);
 
   return (
     <div className="mb-4">
@@ -138,17 +69,7 @@ const SeatSelector = () => {
 
 export default SeatSelector;
 
-{
-  /* <button
-            key={seat}
-            className={`p-2 border rounded`}
-            onClick={() => handleSeatClick(seat)}
-          >
-            {seat}
-          </button> */
-}
-
-function getUniqueRows(data: typeof temP) {
+function getUniqueRows(data: ITicketWithSeat[]) {
   const uniqueRows = new Set();
 
   data.forEach((item) => {

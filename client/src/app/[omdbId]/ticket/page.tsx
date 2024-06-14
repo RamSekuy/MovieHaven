@@ -1,10 +1,8 @@
-import Modal from "@/app/_components/ticketComponent/Modal";
-import mainAPI from "@/app/_lib/mainApi";
 import { Metadata } from "next";
-import { formatToRupiah } from "@/app/_utils/formatToRupiah";
 import TicketSelect from "@/app/_components/ticketComponent/ticketSelect";
 import { TBranchTicket } from "@/app/_model/branchTicket.model";
 import { redirect } from "next/navigation";
+import ssrMainApi from "@/app/_lib/axios/ssrMainApi";
 
 export const generateMetadata = async ({
   params,
@@ -13,7 +11,7 @@ export const generateMetadata = async ({
     omdbId: string;
   };
 }): Promise<Metadata> => {
-  const result = await mainAPI("/movie/" + params.omdbId)
+  const result = await ssrMainApi()("/movie/" + params.omdbId)
     .then((res) => res.data.data)
     .catch((err) => console.log(err));
 
@@ -30,7 +28,7 @@ type Props = {
 };
 
 const TicketPage = async ({ params }: Props) => {
-  const tickets: TBranchTicket[] = await mainAPI
+  const tickets: TBranchTicket[] = await ssrMainApi()
     .get(`/ticket/movie/${params.omdbId}`)
     .then((res) => res.data.data)
     .catch((err) => console.log(err));

@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import ssrMainApi from "./app/_lib/axios/ssrMainApi";
 
-const adminOnly = ["/admin/:path*"];
-const userOnly = [""];
-const guestOnly = ["/register", "/login"];
+const guestOnly = ["/register", "/login", "/forgot"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -24,6 +22,8 @@ export async function middleware(request: NextRequest) {
       return res.data.data;
     })
     .catch((err) => {
+      response.cookies.delete("aauth");
+      response.cookies.delete("rauth");
       return false;
     });
 
@@ -37,18 +37,32 @@ export async function middleware(request: NextRequest) {
         ? "user"
         : "guest";
   }
-
   //Route Protection
-  if (userType != "admin" && pathname.startsWith("/admin/")) {
+  if (
+    (userType != "admin" && pathname.startsWith("/admin/")) ||
+    pathname == "admin-register"
+  ) {
     return NextResponse.redirect(new URL("/admin-login", request.url));
-  } else if (userType != "user" && pathname.startsWith("/chekOut/INV")) {
+  } else if (userType == "admin" && pathname == "/admin-login") {
+    return NextResponse.redirect(new URL("/admin/chart", request.url));
+  } else if (
+    userType != "user" &&
+    (pathname.startsWith("/chekOut/") || pathname.endsWith("/ticket"))
+  ) {
     return NextResponse.redirect(new URL("/login", request.url));
-  } else if (userType != "guest" && guestOnly.find((e) => e == pathname)) {
+  } else if (userType == "user" && guestOnly.find((e) => e == pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return response;
 }
 
 export const config = {
-  matcher: [...userOnly, ...guestOnly, ...adminOnly],
+  matcher: [
+    "/register",
+    "/login",
+    "/forgot",
+    "/admin/:path*",
+    "/:path*/ticket",
+    "/chekOut/:path*",
+  ],
 };

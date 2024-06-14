@@ -5,9 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
 import { userDataAction } from "@/app/_lib/redux/slices/userData.slice";
+import { useRouter } from "next/navigation";
 
 export default function Humburger() {
   const pathname = usePathname();
+  const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const userData = useAppSelector((s) => s.userData);
   const [burger, setBurger] = useState(false);
@@ -89,6 +91,7 @@ export default function Humburger() {
                 if (confirm("sure for logout?")) {
                   dispatch(userDataAction.logout(null));
                   setBurger(false);
+                  router.push("/");
                 }
               }}
             >

@@ -1,8 +1,7 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import mainAPI from "@/app/_lib/mainApi";
 import Link from "next/link";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
 
 interface IBranch {
   id: number;
@@ -11,9 +10,6 @@ interface IBranch {
   branchPassword: string;
   staffSchedules?: Date;
 }
-
-
-
 
 export default function Page() {
   const [branches, setBranches] = useState<IBranch[]>([]);
@@ -24,13 +20,13 @@ export default function Page() {
   const [newBranchPassword, setNewBranchPassword] = useState("");
 
   const fetchBranches = async () => {
-    const result = await mainAPI.get(`/branch/`);
+    const result = await csrMainApi().get(`/branch/`);
     setBranches(result.data.data);
   };
 
   const handleDeleteBranch = async () => {
     if (selectedBranch) {
-      await mainAPI.delete(`/branch/${selectedBranch.id}`);
+      await csrMainApi().delete(`/branch/${selectedBranch.id}`);
       fetchBranches();
       setShowDeleteModal(false);
     }
@@ -42,7 +38,7 @@ export default function Page() {
       return;
     }
 
-    await mainAPI.post(`/branch/b1`, {
+    await csrMainApi().post(`/branch/b1`, {
       location: newBranchLocation,
       branchPassword: newBranchPassword,
     });
@@ -69,8 +65,9 @@ export default function Page() {
         <div
           key={i}
           className="mb-5 px-5 py-3 border-b border-black flex justify-between items-center hover:shadow-lg transition-shadow duration-300"
-        ><Link href={`/admin/branch/${e.id}`}>
-          <h1 className="text-xl">{e.location}</h1>
+        >
+          <Link href={`/admin/branch/${e.id}`}>
+            <h1 className="text-xl">{e.location}</h1>
           </Link>
           <button
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"

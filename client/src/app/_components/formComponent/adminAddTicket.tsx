@@ -3,7 +3,8 @@
 import { TMovie } from "@/app/_model/movie.model";
 import BackEndForm from "./backEndForm";
 import { ChangeEvent, useEffect, useState } from "react";
-import mainApi from "@/app/_lib/mainApi";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
+
 type Props = {
   studioId: number;
   onSuccess: (e: any) => void;
@@ -24,13 +25,13 @@ export default function adminAddTicket({
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setInput({ ...input, [e.target.id]: e.target.value });
   }
-  const fetchMovie = async () => {
-    const data = await mainApi.get("/movie", {
-      params: { status: "CurrentlyPlaying" },
-    });
-    setMovie(data.data.data);
-  };
   useEffect(() => {
+    const fetchMovie = async () => {
+      const data = await csrMainApi().get("/movie", {
+        params: { status: "CurrentlyPlaying" },
+      });
+      setMovie(data.data.data);
+    };
     fetchMovie();
   }, []);
 
@@ -39,9 +40,6 @@ export default function adminAddTicket({
       setInput((prev) => ({ ...prev, omdbId: movie[0].omdbId }));
   }, [movie]);
 
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
   return (
     <BackEndForm
       action={`/ticket/${studioId}/v1`}
@@ -78,7 +76,7 @@ export default function adminAddTicket({
         >
           {/* <option disabled></option> */}
           {movie.map((e, i) => (
-            <option key={i} value={i}>
+            <option key={i} value={e.omdbId}>
               {e.title}
             </option>
           ))}

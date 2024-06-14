@@ -6,8 +6,7 @@ import { deleteCookie } from "cookies-next";
 
 type TState = IUser | null | IAdmin;
 
-const initialState: TState = {} as TState;
-
+const initialState = null as TState;
 const userDataSlice = createSlice({
   name: "userData",
   initialState,

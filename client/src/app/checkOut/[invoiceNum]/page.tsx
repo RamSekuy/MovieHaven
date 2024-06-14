@@ -1,6 +1,7 @@
 import ChangeStatus from "@/app/_components/transactionComponent/changeStatus";
 import { ITransaction } from "@/app/_model/transaction.model";
 import ssrMainApi from "@/app/_lib/axios/ssrMainApi";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -14,7 +15,7 @@ export default async function checkOutPage({ params }: Props) {
       .get(`/transaction/invoice/${params.invoiceNum}`)
       .then((res) => res.data.data as ITransaction)
       .catch((err: any) => {
-        throw new Error("");
+        redirect("/login");
       });
   };
   const result = await fetchTrans();
@@ -60,7 +61,7 @@ export default async function checkOutPage({ params }: Props) {
                 currency: "IDR",
               })}
             </p>
-            <ChangeStatus transactionId={result.id} />
+            {result.isPaid ? null : <ChangeStatus transactionId={result.id} />}
           </div>
         </div>
       </div>

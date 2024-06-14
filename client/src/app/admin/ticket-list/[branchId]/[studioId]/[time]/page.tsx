@@ -1,6 +1,6 @@
 "use client";
 import BackEndForm from "@/app/_components/formComponent/backEndForm";
-import mainAPI from "@/app/_lib/mainApi";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
 import { ChangeEvent, useEffect, useState } from "react";
 
 type Props = {
@@ -23,7 +23,7 @@ const p = [
   },
 ];
 
-export default function page({ params }: Props) {
+export default function Page({ params }: Props) {
   const [tickets, setTickets] = useState<any[]>([]);
   const [studios, setStudios] = useState<any[]>([]);
   const [editInput, setEditInput] = useState<{
@@ -33,17 +33,12 @@ export default function page({ params }: Props) {
     date?: string;
   }>({});
 
-  const fetchStudios = async () => {
-    const data = await mainAPI.get(`/branch/${params.branchId}`);
-    setStudios(data.data.data.studios);
-  };
   function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setEditInput({ ...editInput, [e.target.id]: e.target.value });
-    console.log(editInput);
   }
   const fetchTicketsByEvent = async () => {
     const data = (
-      await mainAPI.get(`/ticket`, {
+      await csrMainApi().get(`/ticket`, {
         params: {
           studioId: params.studioId,
           time: params.time.replaceAll("%3A", ":"),
@@ -54,6 +49,10 @@ export default function page({ params }: Props) {
   };
 
   useEffect(() => {
+    const fetchStudios = async () => {
+      const data = await csrMainApi().get(`/branch/${params.branchId}`);
+      setStudios(data.data.data.studios);
+    };
     fetchTicketsByEvent();
     fetchStudios();
   }, []);

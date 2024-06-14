@@ -1,10 +1,9 @@
 "use client";
-import { ITicket } from "@/app/_model/ticket.model";
+import { TTicket } from "@/app/_model/ticket.model";
 import BuyTicketButton from "./buyTicketButton";
 
-
 type Props = {
-  tickets: ITicket[];
+  tickets: TTicket[];
   branch: any;
   studioId: number;
   studioName: string;

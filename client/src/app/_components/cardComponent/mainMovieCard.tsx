@@ -1,8 +1,8 @@
-import { IMovie } from "@/app/_model/movie.model";
+import { TMovie } from "@/app/_model/movie.model";
 import Image from "next/image";
 type props = {
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  movie: IMovie;
+  movie: TMovie;
 };
 export default function MainMovieCard({ onClick, movie }: props) {
   return (

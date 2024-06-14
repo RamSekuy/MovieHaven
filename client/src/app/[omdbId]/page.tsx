@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Metadata } from "next";
 import { TMovie } from "../_model/movie.model";
-import mainAPI from "../_lib/mainApi";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import RatingForm from "../_components/formComponent/ratingForm";
-import CommentsPage from "../_components/cardComponents/commentCard";
+import CommentsPage from "../_components/cardComponent/commentCard";
+import ssrMainApi from "../_lib/axios/ssrMainApi";
 
 export const generateMetadata = async ({
   params,
@@ -15,12 +15,12 @@ export const generateMetadata = async ({
   };
 }): Promise<Metadata> => {
   try {
-    const result = (await mainAPI("/movie/" + params.omdbId)).data.data;
+    const result = (await ssrMainApi()("/movie/" + params.omdbId)).data.data;
     return {
       title: result.title,
     };
   } catch (err) {
-    redirect("/backendError");
+    throw new Error("");
   }
 };
 
@@ -32,7 +32,7 @@ type Props = {
 
 export default async function MovieDetailPage({ params }: Props) {
   const movie: TMovie = await (
-    await mainAPI.get(`/movie/${params.omdbId}`)
+    await ssrMainApi().get(`/movie/${params.omdbId}`)
   ).data.data;
   return (
     <main className="w-full flex flex-col items-center h-auto p-4 min-h-screen">
@@ -85,10 +85,10 @@ export default async function MovieDetailPage({ params }: Props) {
           </div>
         </div>
         <div>
-          <RatingForm omdbId={params.omdbId}/>
+          <RatingForm omdbId={params.omdbId} />
         </div>
         <div>
-          <CommentsPage omdbId={params.omdbId}/>
+          <CommentsPage omdbId={params.omdbId} />
         </div>
       </div>
     </main>

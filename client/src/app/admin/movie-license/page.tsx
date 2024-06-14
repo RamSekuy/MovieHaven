@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { omdbAPI } from "@/app/_lib/axios/omdbApi";
+import csrMainApi from "@/app/_lib/axios/csrMainApi";
 
 type searchData = {
   Title: string;
@@ -20,10 +22,15 @@ export default function AdminLogin() {
 
   async function omdbFetch(title: string, page: number) {
     setLoading(true);
-    const res = await fetch(
-      `https://www.omdbapi.com/?apikey=c623d88&s=${title}&page=${page}&type=movie`
-    );
-    const result: { Search: searchData[] } = await res.json();
+    const result = (
+      await omdbAPI.get("", {
+        params: {
+          s: title,
+          page,
+        },
+      })
+    ).data as { Search: searchData[] };
+
     if (result.Search) {
       setData(result.Search);
     }
@@ -32,13 +39,11 @@ export default function AdminLogin() {
 
   async function addMovie(imdbID: string) {
     setLoading(true);
-    const response = await fetch(`http://localhost:8000/movie/${imdbID}`, {
-      method: "POST",
-    });
-
-    if (response.ok) {
+    const response = await (
+      await csrMainApi().post(`/movie/${imdbID}`)
+    ).data.data;
+    if (response) {
       setMessage("Success Add");
-      // Ubah tombol menjadi warna biru dan teks menjadi "Film Added"
       const newData = data.map((movie) => {
         if (movie.imdbID === imdbID) {
           return { ...movie, added: true };

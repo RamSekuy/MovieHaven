@@ -18,8 +18,9 @@ export default function AdminStudioDelete({
       action={`/branch/b2/${studioId}`}
       data={{}}
       method="delete"
-      onSuccess={(e) => {
-        onSuccess;
+      onSuccess={(r) => {
+        onSuccess(r);
+        closeModal();
       }}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >

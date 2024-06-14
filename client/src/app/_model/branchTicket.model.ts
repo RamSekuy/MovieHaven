@@ -1,4 +1,4 @@
-import { ITicket } from "./ticket.model";
+import { TTicket } from "./ticket.model";
 
 export type TBranchTicket = {
   id: number;
@@ -13,6 +13,6 @@ export type TBranchTicket = {
     studioId: number;
     row: string;
     number: number;
-    ticket: ITicket[];
+    ticket: TTicket[];
   }[];
 };

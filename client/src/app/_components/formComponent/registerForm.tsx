@@ -23,6 +23,7 @@ const RegisterForm: React.FC = () => {
           data={input}
           method="post"
           onSuccess={(res) => {
+            alert("Check your email");
             router.push("/login");
           }}
         >
@@ -77,6 +78,7 @@ const RegisterForm: React.FC = () => {
             type="submit"
             placeholder="Register"
             className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition duration-200"
+            onClick={(e) => {}}
           />
         </BackEndForm>
         <div className="mt-4 text-center">

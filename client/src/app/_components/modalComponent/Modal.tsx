@@ -15,7 +15,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
         className="fixed inset-0 bg-black opacity-50"
         onClick={onClose}
       ></div>
-      <div className="bg-white p-4 rounded shadow-lg z-50  mx-4 overflow-scroll min-w-10">
+      <div className="bg-white p-4 rounded shadow-lg z-50  mx-4 min-w-10 max-h-[90%] overflow-auto">
         {children}
       </div>
     </div>
