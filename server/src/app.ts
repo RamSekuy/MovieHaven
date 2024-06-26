@@ -11,7 +11,7 @@ import branchRouter from "./routers/branch.router";
 import ratingRouter from "./routers/rating.router";
 
 export class App {
-  private app: Application;
+  public app: Application;
   constructor() {
     this.app = express();
 

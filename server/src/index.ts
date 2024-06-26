@@ -1,8 +1,15 @@
 import { App } from "./app";
 
-const main = () => {
-  const app = new App();
-  app.start();
-};
+const app = new App();
+app.start();
 
-main();
+module.exports = app.app;
+
+// import express, { Request, Response } from "express";
+// const app = express();
+
+// app.get("/", (req: Request, res: Response) => res.send("Express on yo"));
+
+// app.listen(8000, () => console.log("Server ready on port 3000."));
+
+// module.exports = app;

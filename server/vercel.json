@@ -1,4 +1,11 @@
 {
   "version": 2,
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "builds": [
+    {
+      "src": "dist/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "buildCommand": "sh vercel.sh",
+  "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }]
 }
