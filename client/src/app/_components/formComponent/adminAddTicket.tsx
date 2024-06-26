@@ -2,8 +2,9 @@
 
 import { TMovie } from "@/app/_model/movie.model";
 import BackEndForm from "./backEndForm";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import csrMainApi from "@/app/_lib/axios/csrMainApi";
+import { useInput } from "@/app/_utils/inputHandlerState";
 
 type Props = {
   studioId: number;
@@ -11,20 +12,17 @@ type Props = {
   closeModal: () => void;
 };
 
-export default function adminAddTicket({
+export default function AdminAddTicket({
   studioId,
   onSuccess,
   closeModal,
 }: Props) {
-  const [input, setInput] = useState({
+  const [movie, setMovie] = useState<TMovie[]>([]);
+  const { input, setInput, inputHandler } = useInput({
     price: 0,
     date: "",
     omdbId: "",
   });
-  const [movie, setMovie] = useState<TMovie[]>([]);
-  function inputHandler(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    setInput({ ...input, [e.target.id]: e.target.value });
-  }
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await csrMainApi().get("/movie", {

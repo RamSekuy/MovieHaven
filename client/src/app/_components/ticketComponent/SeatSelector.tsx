@@ -24,43 +24,41 @@ const SeatSelector = () => {
       <h2 className="text-lg font-semibold">Select Seats</h2>
       <div className="flex flex-col w-full">
         {getUniqueRows(seats).map((a, aidx) => (
-          <>
-            <div className="w-full flex flex-nowrap" key={aidx}>
-              {seats.map((e, i) => {
-                const booked = e.transactionId;
-                const selected =
-                  selectTicket.tickets.findIndex((te) => te.id == e.id) + 1;
-                return (
-                  e.seat.row == a && (
-                    <button
-                      disabled={Boolean(booked)}
-                      key={e.id}
-                      onClick={(event) => {
-                        const selectedTickets = selected
-                          ? selectTicket.tickets.filter((te) => te.id !== e.id)
-                          : [...selectTicket.tickets, e];
-                        dispatch(
-                          setSelectTicket({
-                            ...selectTicket,
-                            tickets: selectedTickets,
-                          })
-                        );
-                      }}
-                      className={`p-2 border rounded min-w-[50px] ${
-                        booked
-                          ? "bg-gray-500"
-                          : selected
-                          ? "bg-red-600"
-                          : "bg-green-400"
-                      }`}
-                    >
-                      {e.seat.row + String(e.seat.number)}
-                    </button>
-                  )
-                );
-              })}
-            </div>
-          </>
+          <div className="w-full flex flex-nowrap" key={aidx}>
+            {seats.map((e, i) => {
+              const booked = e.transactionId;
+              const selected =
+                selectTicket.tickets.findIndex((te) => te.id == e.id) + 1;
+              return (
+                e.seat.row == a && (
+                  <button
+                    disabled={Boolean(booked)}
+                    key={e.id}
+                    onClick={(event) => {
+                      const selectedTickets = selected
+                        ? selectTicket.tickets.filter((te) => te.id !== e.id)
+                        : [...selectTicket.tickets, e];
+                      dispatch(
+                        setSelectTicket({
+                          ...selectTicket,
+                          tickets: selectedTickets,
+                        })
+                      );
+                    }}
+                    className={`p-2 border rounded min-w-[50px] ${
+                      booked
+                        ? "bg-gray-500"
+                        : selected
+                        ? "bg-red-600"
+                        : "bg-green-400"
+                    }`}
+                  >
+                    {e.seat.row + String(e.seat.number)}
+                  </button>
+                )
+              );
+            })}
+          </div>
         ))}
       </div>
     </div>

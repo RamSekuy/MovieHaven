@@ -16,22 +16,18 @@ export default function MovieList() {
     index: number;
   } | null>(null);
 
-  async function fetchMovies() {
-    try {
-      const response = await csrMainApi().get("/movie", {
-        params: { ...(title.length ? { title } : {}) },
-      });
-      setMovies(response.data.data);
-    } catch (error) {
-      console.error("Error fetching movies:", error);
-    }
-  }
-  useEffect(() => {
-    fetchMovies();
-  }, []);
-
   const [debonce, setDebonce] = useState<NodeJS.Timeout>();
   useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const response = await csrMainApi().get("/movie", {
+          params: { ...(title.length ? { title } : {}) },
+        });
+        setMovies(response.data.data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    }
     clearTimeout(debonce);
     setDebonce(setTimeout(fetchMovies, 500));
   }, [title]);
