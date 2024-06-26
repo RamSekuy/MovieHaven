@@ -5,4 +5,4 @@ const main = () => {
   app.start();
 };
 
-module.exports = main;
+main();

@@ -50,7 +50,7 @@ export class App {
   }
   public start() {
     this.app.listen(PORT, () => {
-      console.log(`Berhasil`);
+      console.log(`http://localhost:${PORT}`);
     });
   }
 }
