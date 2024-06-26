@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon --files",
     "start": "nodemon --files",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "nodemon --files"
   },
   "keywords": [],
   "author": "",

@@ -32,7 +32,6 @@ export class App {
     this.app.use("/transaction", transactionRouter.getRouter());
     this.app.use("/branch", branchRouter.getRouter());
     this.app.use("/rating", ratingRouter.getRouter());
-
   }
   private errorHandler() {
     this.app.use(
@@ -51,7 +50,7 @@ export class App {
   }
   public start() {
     this.app.listen(PORT, () => {
-      console.log(`http://localhost:${PORT}`);
+      console.log(`Berhasil`);
     });
   }
 }
