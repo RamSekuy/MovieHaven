@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const app_1 = require("./app");
+const app = new app_1.App();
+app.start();
+module.exports = app.app;
+// import express, { Request, Response } from "express";
+// const app = express();
+// app.get("/", (req: Request, res: Response) => res.send("Express on yo"));
+// app.listen(8000, () => console.log("Server ready on port 3000."));
+// module.exports = app;
