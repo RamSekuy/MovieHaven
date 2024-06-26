@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "sh vercel.sh",
+  "buildCommand": "npmm run build",
   "builds": [
     {
       "src": "dist/index.js",
