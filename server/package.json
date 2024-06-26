@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon --files",
     "start": "nodemon --files",
-    "build": "nodemon --files"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
