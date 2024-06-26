@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon --files",
     "start": "nodemon ./dist",
-    "build": "prisma generate && tsc"
+    "build": "npx prisma generate && tsc"
   },
   "keywords": [],
   "author": "",
