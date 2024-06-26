@@ -6,6 +6,6 @@
       "use": "@vercel/node"
     }
   ],
-  "buildCommand": "sh vercel.sh",
+  "buildCommand": "npm run build",
   "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }]
 }
