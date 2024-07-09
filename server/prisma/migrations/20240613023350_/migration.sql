@@ -11,7 +11,7 @@ CREATE TABLE `Movie` (
     `genre` VARCHAR(191) NOT NULL,
     `director` VARCHAR(191) NOT NULL,
     `actors` VARCHAR(191) NOT NULL,
-    `plot` Text NOT NULL,
+    `plot` VARCHAR(191) NOT NULL,
     `language` VARCHAR(191) NOT NULL,
     `country` VARCHAR(191) NOT NULL,
     `poster` VARCHAR(191) NOT NULL,
@@ -97,10 +97,8 @@ CREATE TABLE `User` (
     `pointExpire` DATETIME(3) NULL,
     `referalCode` VARCHAR(191) NULL,
     `referalTo` VARCHAR(191) NULL,
-    `isVerify` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `User_email_key`(`email`),
-    UNIQUE INDEX `User_referalCode_key`(`referalCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
