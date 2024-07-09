@@ -11,7 +11,7 @@ import branchRouter from "./routers/branch.router";
 import ratingRouter from "./routers/rating.router";
 
 export class App {
-  public app: Application;
+  private app: Application;
   constructor() {
     this.app = express();
 
@@ -32,6 +32,7 @@ export class App {
     this.app.use("/transaction", transactionRouter.getRouter());
     this.app.use("/branch", branchRouter.getRouter());
     this.app.use("/rating", ratingRouter.getRouter());
+
   }
   private errorHandler() {
     this.app.use(

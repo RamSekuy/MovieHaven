@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ChangeEvent } from "react";
+import AdminStudioDelete from "@/app/_components/formComponent/adminStudioDelete";
+import AdminAddTicket from "@/app/_components/formComponent/adminAddTicket";
 import dynamic from "next/dynamic";
 import BackEndForm from "@/app/_components/formComponent/backEndForm";
 import csrMainApi from "@/app/_lib/axios/csrMainApi";
@@ -20,12 +21,6 @@ type Props = {
 };
 
 export default function Page({ params }: Props) {
-  const AdminStudioDelete = dynamic(
-    () => import("@/app/_components/formComponent/adminStudioDelete")
-  );
-  const AdminAddTicket = dynamic(
-    () => import("@/app/_components/formComponent/adminAddTicket")
-  );
   const [studios, setStudios] = useState<IStuido[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedStudio, setSelectedStudio] = useState<IStuido | null>(null);

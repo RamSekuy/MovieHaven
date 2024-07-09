@@ -10,6 +10,6 @@ export const VERIFY_URL = process.env.VERIFY_URL;
 export const FORGOT_URL = process.env.FORGOT_URL;
 
 export const corsOption: CorsOptions = {
-  origin: "*",
+  origin: ["http://localhost:3000"],
   credentials: true,
 };
